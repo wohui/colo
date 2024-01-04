@@ -1,0 +1,4 @@
+django==5.0.1
+locust==2.20.1
+
+mysqlclient==2.1.0
