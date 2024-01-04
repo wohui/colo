@@ -7,10 +7,3 @@ def test_view(request):
         'data':[1,2,3]
     }
     return JsonResponse(res,safe=False)
-
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/wohui/colo.git
-git push -u origin main
