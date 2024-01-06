@@ -1,0 +1,25 @@
+version: '3'
+services:
+  postgres:
+    image: cyberw/locust-timescale:6
+    ports:
+      # remove the 127.0.0.1 to expose postgres to other machines (including load gen workers outside this machine)
+      - "5432:5432"
+    environment:
+      # change the password if you intend to expose postgres to other machines
+      - POSTGRES_PASSWORD=hui666666
+      - TIMESCALEDB_TELEMETRY=off
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  grafana:
+    image: cyberw/locust-grafana:3
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    restart: unless-stopped
+
+volumes:
+  postgres_data: null
+  grafana_data: null
