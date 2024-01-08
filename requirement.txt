@@ -2,6 +2,7 @@ django==5.0.1
 locust==2.20.1
 locust-plugins==4.3.2
 psycogreen==1.0.2
-psycopg2-binary=2.9.9
+psycopg2-binary==2.9.9
 mysqlclient==2.1.0
-docker == 7.0.0
+pymysql
+docker== 7.0.0

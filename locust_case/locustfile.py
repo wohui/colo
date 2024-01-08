@@ -7,10 +7,10 @@ from locust import HttpUser, TaskSet, task, between,run_single_user
 from locust_plugins import listeners
 from locust import HttpUser, task, events
 import os
-os.environ['PGHOST'] = '127.0.0.1'
+os.environ['PGHOST'] = '192.168.0.101'
 os.environ['PGUSER'] = 'postgres'
 os.environ['PGPASSWORD'] = 'hui666666'
-os.environ['PGDATABASE'] = 'postgres'
+os.environ['PGDATABASE'] = 'colo_test'
 class NoSlowQTaskSet(HttpUser):
     host = "http://192.168.0.101:8000"
     @task(2)
