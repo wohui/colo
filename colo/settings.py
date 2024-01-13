@@ -79,7 +79,7 @@ DATABASES = {
         'NAME': 'colo',
         'USER': 'root',
         'PASSWORD': 'hui666666',
-        'HOST': '127.0.0.1',
+        'HOST': '192.168.0.101',
         'PORT': 3306,
     }
 }

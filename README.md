@@ -1,17 +1,39 @@
-# 安装依赖
+# 说明
+这是一个基于Python+Locust+Grafana+Vue 追求简单化执行性能测试，平台化集成脚本生成、执行配置、任务管理、监控报警
+
+* 简单
+* 平台化
+* 易扩展
+
+# 架构
+
+# 部署
+
+## 服务端
+
+### 安装依赖
+
 ```shell
 pip install -r requirements.txt
 ```
-# 运行后端服务
-
+## 部署postgres+grafana
+推荐docker部署，项目下有docker-compose文件，直接部署[docker-compose.yml](docker-compose.yml)
+## 部署前端服务
+##
+# 运行
+## 平台操作
 # 手动运行locust
+
 ```shell
  locust --timescale --headless --override-plan-name 0108
 ```
-# 运行前端服务
+
+
+
 # 平台流程
 
 # 注意点：
+
 mysqlclient无法安装，在settings使用pymysql转换
 locust-plugins依赖问题
 locustfile脚本，需要增加pgsqldb的环境变量配置
@@ -24,7 +46,7 @@ locustfile要自动生成，还要分发到每个压力机上
 
 1、docker 远程访问，需要开启ssl
 [Service]
-ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix://var/run/docker.sock 
+ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix://var/run/docker.sock
 
 2、Docker进程监听2375端口，接受远程访问。但是在MacOS下，却无法使用。需要做如下两步配置：
 brew install socat

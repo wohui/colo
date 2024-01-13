@@ -1,10 +1,11 @@
+import os.path
 import time,datetime
 
-class File():
+class LocustFile():
     def __init__(self):
         pass
 
-    def create_locust_file(self,locust_data):
+    def create(self,locust_data):
       """Creates a Python file containing the given functions.
 
       Args:
@@ -26,8 +27,12 @@ class File():
         file_contents += f"   def locust_method_{index+1}(self):\n"
         file_contents += f"       r = self.client.get(\"{item['path']}\")\n"
 
-      return file_contents
-
+      now_time = datetime.datetime.now()
+      format_time = now_time.strftime("%Y_%m_%d_%H_%M_%S_%f")
+      file_name = f"locust_case/colo_{format_time}@locustfile.py"
+      with open(file_name, mode="w") as f:
+        f.write(file_contents)
+      return f'colo_{format_time}@locustfile.py'
 
 if __name__ == "__main__":
   locust_data = [
@@ -40,8 +45,8 @@ if __name__ == "__main__":
       "path": "/say_hello/hui"
     },
   ]
-  locust_flie = File()
-  file_contents = locust_flie.create_locust_file(locust_data)
+  locust_flie = LocustFile()
+  file_contents = locust_flie.create(locust_data)
   now_time = datetime.datetime.now()
   format_time = now_time.strftime("%Y_%m_%d_%H_%M_%S_%f")
 # 打印结果

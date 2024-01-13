@@ -4,5 +4,5 @@ locust-plugins==4.3.2
 psycogreen==1.0.2
 psycopg2-binary==2.9.9
 mysqlclient==2.1.0
-pymysql
+pymysql==1.1.0
 docker== 7.0.0
