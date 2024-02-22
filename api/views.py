@@ -1,28 +1,42 @@
-import json
-
-from django.shortcuts import render
 from django.http import JsonResponse
 
 from util.file import LocustFile
+
+
 # Create your views here.
 
 def test_view(request):
-    res= {
-        'data':[1,2,3]
+    res = {
+        'data': {
+            'username': 'admin',
+            'token': 'admin-token',
+        },
+        'code': 0,
+        'message': '登录成功'
     }
+    return JsonResponse(res, safe=False)
+
+
+def users_info_view(request):
+    res = {"code": 0, "data": {"username": "admin", "roles": ["admin"]}, "message": "获取用户详情成功"}
+    return JsonResponse(res, safe=False)
+
+
 def test_generate(request):
-    api_url='http://www.baidu.com'
-    res=[]
-    return JsonResponse(res,safe=False)
-def create_task_view(request):
+    api_url = 'http://www.baidu.com'
+    res = []
+    return JsonResponse(res, safe=False)
+
+
+def create_plan_view(request):
     """
-    1、获取到任务信息，生成locustfile
-    2、将以上信息，生成一个未开始的任务，保存到平台数据库
+    1.生成测试计划，保存任务信息到数据库
+    2.可以编辑？
     3、
     """
     task_info = {
-        'name':'test_plan_1',
-        'locust_data':[
+        'name': 'test_plan_1',
+        'locust_data': [
             {
                 "host": "http://192.168.0.101:8000",
                 "path": "/get_data/test"
@@ -38,22 +52,32 @@ def create_task_view(request):
         ],
 
     }
+
+    res = {
+        'data':[],
+        'code':0,
+        'res': 'OKK'
+    }
+    return JsonResponse(res, safe=False)
+
+
+def run_task_view(request):
+    task_id = 1
+    """
+    1.根据taskid查询任务信息
+    2.生成locustfile，开始执行，修改状态
+    """
     locust_flie = LocustFile()
-    file_name = locust_flie.create(task_info['name'],task_info['locust_data'])
+    file_name = locust_flie.create(task_id)
     if file_name != '':
         pass
     else:
         res = {
-            'code':-1,
-            'msg':'生成locustfile失败'
+            'code': -1,
+            'msg': '生成locustfile失败'
         }
     # 开始写信息到数据库
 
-    res= {
-        'res': 'OKK'
-    }
-    return JsonResponse(res,safe=False)
-def run_task_view(request):
-    api_url='http://www.baidu.com'
-    res=[]
-    return JsonResponse(res,safe=False)
+    api_url = 'http://www.baidu.com'
+    res = []
+    return JsonResponse(res, safe=False)

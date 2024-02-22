@@ -5,8 +5,12 @@
 * 平台化
 * 易扩展
 
-# 架构
+# 技术架构
+后端：django+mysql+locust
 
+前端：vue3+element-ui
+
+性能监控：Grafana+postgressql
 # 部署
 
 ## 服务端
