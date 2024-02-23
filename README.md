@@ -56,8 +56,7 @@ python3 manage.py runserver 0.0.0.0:8000
 # 运行
 
 浏览器打开访问localhost:3333
-
-![image.png](assets/image_index.png)
+![img.png](img.png)
 
 ## 平台操作
 

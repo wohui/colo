@@ -1,6 +1,9 @@
 export interface CreateOrUpdateTableRequestData {
   id?: string
   name: string
+  url: string
+  reqData: string
+  ratio: string
 }
 
 export interface GetTableRequestData {
@@ -9,19 +12,16 @@ export interface GetTableRequestData {
   /** 查询条数 */
   size: number
   /** 查询参数：用户名 */
-  username?: string
+  name?: string
   /** 查询参数：手机号 */
   phone?: string
 }
 
 export interface GetTableData {
   createTime: string
-  email: string
   id: string
-  phone: string
-  roles: string
   status: boolean
-  username: string
+  name: string
 }
 
 export type GetTableResponseData = ApiResponseData<{

@@ -62,6 +62,28 @@ export const constantRoutes: RouteRecordRaw[] = [
     ]
   },
   {
+    path: "/user",
+    component: Layouts,
+    redirect: "/user",
+    name: "User",
+    meta: {
+      title: "用户管理",
+      elIcon: "Grid"
+    },
+    children: [
+      {
+        path: "user",
+        component: () => import("@/views/menu/menu2/index.vue"),
+        name: "plan",
+        meta: {
+          title: "用户管理",
+          svgIcon: "component",
+          keepAlive: true
+        }
+      },
+    ]
+  },
+  {
     path: "/perf",
     component: Layouts,
     redirect: "/perf/plan",
@@ -74,7 +96,7 @@ export const constantRoutes: RouteRecordRaw[] = [
       {
         path: "plan",
         component: () => import("@/views/perf/plan.vue"),
-        name: "plan",
+        name: "Plan",
         meta: {
           title: "测试计划",
           keepAlive: true
@@ -89,6 +111,50 @@ export const constantRoutes: RouteRecordRaw[] = [
           keepAlive: true
         }
       }
+    ]
+  },
+  {
+    path: "/env",
+    component: Layouts,
+    redirect: "/env",
+    name: "",
+    meta: {
+      title: "环境管理",
+      elIcon: "Grid"
+    },
+    children: [
+      {
+        path: "env",
+        component: () => import("@/views/menu/menu2/index.vue"),
+        name: "Env",
+        meta: {
+          title: "环境管理",
+          svgIcon: "menu",
+          keepAlive: true
+        }
+      },
+    ]
+  },
+  {
+    path: "/system",
+    component: Layouts,
+    redirect: "/system",
+    name: "System",
+    meta: {
+      title: "系统管理",
+      elIcon: "system"
+    },
+    children: [
+      {
+        path: "system",
+        component: () => import("@/views/menu/menu2/index.vue"),
+        name: "System",
+        meta: {
+          title: "系统配置",
+          svgIcon: "unocss",
+          keepAlive: true
+        }
+      },
     ]
   },
   // {

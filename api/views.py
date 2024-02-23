@@ -1,3 +1,5 @@
+import json
+
 from django.http import JsonResponse
 
 from util.file import LocustFile
@@ -28,12 +30,33 @@ def test_generate(request):
     return JsonResponse(res, safe=False)
 
 
+def get_plan_view(request):
+    res = {
+        'data': {
+            'total': 24,
+            'list': [{
+                'name': "用户压测",
+                "url": "http://192.68.1.101:8888",
+                'ratio': 11
+            },
+                {
+                    'name': "登录试试",
+                    "url": "http://192.68.10.201:6666",
+                    'ratio': 22
+                }]
+        },
+        'code': 0,
+    }
+    return JsonResponse(res, safe=False)
+
+
 def create_plan_view(request):
     """
     1.生成测试计划，保存任务信息到数据库
     2.可以编辑？
     3、
     """
+    plan_info = json.loads(request.body)
     task_info = {
         'name': 'test_plan_1',
         'locust_data': [
@@ -54,9 +77,20 @@ def create_plan_view(request):
     }
 
     res = {
-        'data':[],
-        'code':0,
-        'res': 'OKK'
+        'data': {
+            'total': 24,
+            'list': [{
+                'name': "1",
+                "url": "baidu",
+                'ratio': 11
+            },
+                {
+                    'name': "2",
+                    "url": "baidu",
+                    'ratio': 22
+                }]
+        },
+        'code': 0,
     }
     return JsonResponse(res, safe=False)
 
