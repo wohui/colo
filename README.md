@@ -16,7 +16,7 @@
 
 监控：postgres（timescale）+grafana
 
-性能监控：Grafana+postgressql
+监控系统：Grafana+postgressql
 
 # 部署
 
