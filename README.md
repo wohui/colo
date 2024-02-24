@@ -9,8 +9,11 @@
 # 技术架构
 
 前端：vue3+element-ui
+
 后端：django+mysql
+
 性能引擎：locust
+
 监控：postgres（timescale）+grafana
 
 性能监控：Grafana+postgressql
