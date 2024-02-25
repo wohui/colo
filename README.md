@@ -65,18 +65,21 @@ python3 manage.py runserver 0.0.0.0:8000
 ```shell
  locust --timescale --headless --override-plan-name 0108
 ```
+
 # 平台流程
 
 # 注意点记录：
+
 mysqlclient无法安装，在settings使用pymysql转换
 locust-plugins依赖问题
 locustfile脚本，需要增加pgsqldb的环境变量配置
 docker化部署pgsql+grafana
 locustfile要自动生成，还要分发到每个压力机上
 
+# 部署过程环境遇到的问题
 
-部署过程环境遇到的问题
-1、docker 远程访问，需要开启ssl
+## docker 部署在另一台局域网的macmini上，远程访问，需要开启ssl
+
 [Service]
 ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix://var/run/docker.sock
 
@@ -101,5 +104,8 @@ export DOCKER_HOST=tcp://localhost:2375
 
 source .bash_profile
 
-todo：
-| 分布式
+# todo
+
+* [ ]  脚本上传管理
+* [ ]  分布式执行
+* [ ]
