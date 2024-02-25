@@ -8,11 +8,15 @@
 
 # 技术架构
 
-后端：django+mysql+locust
-
 前端：vue3+element-ui
 
-性能监控：Grafana+postgressql
+后端：django+mysql
+
+性能引擎：locust
+
+监控：postgres（timescale）+grafana
+
+监控系统：Grafana+postgressql
 
 # 部署
 
