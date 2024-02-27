@@ -1,6 +1,7 @@
 # 说明
 
-这是一个基于Python+Locust+Grafana+Vue 追求简单化执行性能测试，平台化集成脚本生成、执行配置、任务管理、监控报警
+这是一个基于Python+Locust+Grafana+Vue的性能测试平台，追求简单化执行性能测试，平台化集成脚本管理、场景配置、压力配置、任务管理、监控报警等
+是使用Python+Locust搭建一个性能测试平台，也想通过Grafana做个监控大盘的，会是一个不错的选择。
 
 * 简单
 * 平台化
@@ -14,9 +15,7 @@
 
 性能引擎：locust
 
-监控：postgres（timescale）+grafana
-
-监控系统：Grafana+postgressql
+监控系统：Grafana+postgressql（timescale）
 
 # 部署
 
