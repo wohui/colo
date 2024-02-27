@@ -93,6 +93,15 @@ export const constantRoutes: RouteRecordRaw[] = [
       elIcon: "Grid"
     },
     children: [
+       {
+        path: "script",
+        component: () => import("@/views/perf/plan.vue"),
+        name: "Script",
+        meta: {
+          title: "脚本管理", // 脚本上传，脚本调试，脚本运行
+          keepAlive: true
+        }
+      },
       {
         path: "plan",
         component: () => import("@/views/perf/plan.vue"),
