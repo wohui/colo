@@ -2,7 +2,7 @@ export interface CreateOrUpdateTableRequestData {
   id?: string
   name: string
   url: string
-  reqData: string
+  req_data: string
   ratio: string
 }
 
@@ -27,4 +27,7 @@ export interface GetTableData {
 export type GetTableResponseData = ApiResponseData<{
   list: GetTableData[]
   total: number
+}>
+
+export type CommonResponseData = ApiResponseData<{
 }>

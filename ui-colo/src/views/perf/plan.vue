@@ -1,6 +1,12 @@
 <script lang="ts" setup>
 import {reactive, ref, watch} from "vue"
-import {createTableDataApi, deleteTableDataApi, getTableDataApi, updateTableDataApi} from "@/api/plan"
+import {
+  createTableDataApi,
+  deleteTableDataApi,
+  executePerfPlanApi,
+  getTableDataApi,
+  updateTableDataApi
+} from "@/api/plan"
 import {type CreateOrUpdateTableRequestData, type GetTableData} from "@/api/plan/types/planTable"
 import {ElMessage, ElMessageBox, type FormInstance, type FormRules} from "element-plus"
 import {CirclePlus, Delete, Refresh, RefreshRight, Search} from "@element-plus/icons-vue"
@@ -19,8 +25,8 @@ const DEFAULT_FORM_DATA: CreateOrUpdateTableRequestData = {
   id: undefined,
   name: "测试登录",
   url: "http://10.1.0.222:6666",
-  reqData: "",
-  ratio: 19
+  req_data: "",
+  ratio: '19'
 }
 const planActiveIndex = ref('1')
 const dialogVisible = ref<boolean>(false)
@@ -35,14 +41,14 @@ const handleCreateOrUpdate = () => {
     loading.value = true
     const api = formData.value.id === undefined ? createTableDataApi : updateTableDataApi
     api(formData.value)
-      .then(() => {
-        ElMessage.success("操作成功")
-        dialogVisible.value = false
-        getTableData()
-      })
-      .finally(() => {
-        loading.value = false
-      })
+        .then(() => {
+          ElMessage.success("操作成功")
+          dialogVisible.value = false
+          getTableData()
+        })
+        .finally(() => {
+          loading.value = false
+        })
   })
 }
 const resetForm = () => {
@@ -53,7 +59,7 @@ const resetForm = () => {
 
 //#region 删
 const handleDelete = (row: GetTableData) => {
-  ElMessageBox.confirm(`正在删除用户：${row.username}，确认删除？`, "提示", {
+  ElMessageBox.confirm(`正在删除用户：${row.name}，确认删除？`, "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning"
@@ -69,6 +75,15 @@ const handleDelete = (row: GetTableData) => {
 //#region 改
 const handleUpdate = (row: GetTableData) => {
   dialogVisible.value = true
+  formData.value = JSON.parse(JSON.stringify(row))
+}
+const handleExecute = (row: GetTableData) => {
+  // 执行测试计划，生成测试记录
+  executePerfPlan()
+  // formData.value = JSON.parse(JSON.stringify(row))
+}
+const handleStop = (row: GetTableData) => {
+  console.log(row)
   formData.value = JSON.parse(JSON.stringify(row))
 }
 //#endregion
@@ -88,17 +103,33 @@ const getTableData = () => {
     name: searchData.name || undefined,
     phone: searchData.phone || undefined
   })
-    .then(({data}) => {
-      paginationData.total = data.total
-      console.log(data)
-      tableData.value = data.list
-    })
-    .catch(() => {
-      tableData.value = []
-    })
-    .finally(() => {
-      loading.value = false
-    })
+      .then(({data}) => {
+        paginationData.total = data.total
+        console.log(data)
+        tableData.value = data.list
+      })
+      .catch(() => {
+        tableData.value = []
+      })
+      .finally(() => {
+        loading.value = false
+      })
+}
+const executePerfPlan = () => {
+  loading.value = true
+  executePerfPlanApi({
+    id: '123' || undefined,
+    name: '22' || undefined,
+  })
+      .then(({data}) => {
+        console.log(data)
+      })
+      .catch(() => {
+        tableData.value = []
+      })
+      .finally(() => {
+        loading.value = false
+      })
 }
 const handlePlanMenuSelect = (key: string, keyPath: string[]) => {
   planActiveIndex.value = key
@@ -124,9 +155,9 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         <el-form-item prop="name" label="测试计划">
           <el-input v-model="searchData.name" placeholder="请输入"/>
         </el-form-item>
-<!--        <el-form-item prop="phone" label="手机号">-->
-<!--          <el-input v-model="searchData.phone" placeholder="请输入"/>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item prop="phone" label="手机号">-->
+        <!--          <el-input v-model="searchData.phone" placeholder="请输入"/>-->
+        <!--        </el-form-item>-->
         <el-form-item>
           <el-button type="primary" :icon="Search" @click="handleSearch">查询</el-button>
           <el-button :icon="Refresh" @click="resetSearch">重置</el-button>
@@ -157,8 +188,10 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
             </template>
           </el-table-column>
           <el-table-column prop="createTime" label="创建时间" align="center"/>
-          <el-table-column fixed="right" label="操作" width="150" align="center">
+          <el-table-column fixed="right" label="操作" width="240" align="center">
             <template #default="scope">
+              <el-button type="primary" text bg size="small" @click="handleExecute(scope.row)">开始压测</el-button>
+              <el-button type="primary" text bg size="small" @click="handleStop(scope.row)">停止</el-button>
               <el-button type="primary" text bg size="small" @click="handleUpdate(scope.row)">修改</el-button>
               <el-button type="danger" text bg size="small" @click="handleDelete(scope.row)">删除</el-button>
             </template>
@@ -167,46 +200,46 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
       </div>
       <div class="pager-wrapper">
         <el-pagination
-          background
-          :layout="paginationData.layout"
-          :page-sizes="paginationData.pageSizes"
-          :total="paginationData.total"
-          :page-size="paginationData.pageSize"
-          :currentPage="paginationData.currentPage"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
+            background
+            :layout="paginationData.layout"
+            :page-sizes="paginationData.pageSizes"
+            :total="paginationData.total"
+            :page-size="paginationData.pageSize"
+            :currentPage="paginationData.currentPage"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
         />
       </div>
     </el-card>
     <!-- 新增/修改 -->
     <el-dialog
-      v-model="dialogVisible"
-      :title="formData.id === undefined ? '新增计划' : '修改计划'"
-      @closed="resetForm"
-      width="30%"
+        v-model="dialogVisible"
+        :title="formData.id === undefined ? '新增计划' : '修改计划'"
+        @closed="resetForm"
+        width="30%"
     >
       <el-menu
-        :default-active="planActiveIndex"
-        class="el-menu-plan"
-        mode="horizontal"
-        @select="handlePlanMenuSelect"
+          :default-active="planActiveIndex"
+          class="el-menu-plan"
+          mode="horizontal"
+          @select="handlePlanMenuSelect"
       >
         <el-menu-item index="1">场景配置</el-menu-item>
-        <el-menu-item index="2" >压力配置</el-menu-item>
+        <el-menu-item index="2">压力配置</el-menu-item>
         <el-menu-item index="3">其他</el-menu-item>
       </el-menu>
 
       <el-form ref="formRef" :model="formData" :rules="formRules" label-width="80px" label-position="left">
-        <el-form-item prop="planName" label="计划名称" v-show="planActiveIndex=='1'" >
+        <el-form-item prop="planName" label="计划名称" v-show="planActiveIndex=='1'">
           <el-input v-model="formData.name" placeholder="请输入"/>
         </el-form-item>
         <el-form-item prop="url" label="接口地址" v-if="formData.id === undefined">
           <el-input v-model="formData.url" placeholder="请输入"/>
         </el-form-item>
-         <el-form-item prop="url" label="请求参数" v-if="formData.id === undefined">
-          <el-input v-model="formData.reqData" placeholder="请输入"/>
+        <el-form-item prop="url" label="请求参数" v-if="formData.id === undefined">
+          <el-input v-model="formData.req_data" placeholder="请输入"/>
         </el-form-item>
-         <el-form-item prop="url" label="流量占比" v-if="formData.id === undefined">
+        <el-form-item prop="url" label="流量占比" v-if="formData.id === undefined">
           <el-input v-model="formData.ratio" placeholder="请输入"/>
         </el-form-item>
       </el-form>

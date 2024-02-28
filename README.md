@@ -2,7 +2,7 @@
 
 这是一个基于Python+Locust+Grafana+Vue的性能测试平台，追求简单化执行性能测试，平台化集成脚本管理、场景配置、压力配置、任务管理、监控报警等
 是使用Python+Locust搭建一个性能测试平台，也想通过Grafana做个监控大盘的，会是一个不错的选择。
-
+（开发中）
 * 简单
 * 平台化
 * 易扩展
@@ -50,7 +50,10 @@ npm build:prod
 # 安装依赖
 pip install -r requirements.txt
 # 建colo需要的库表
-
+##安装一个mysql库，具体用户名等信息在setting.py配置
+# 运行一下2个命令，生成所需的表
+python manage.py makemigrations api
+python manage.py migrate
 # 运行后端服务
 python3 manage.py runserver 0.0.0.0:8000
 
@@ -67,6 +70,7 @@ python3 manage.py runserver 0.0.0.0:8000
 
 ```shell
  locust --timescale --headless --override-plan-name 0108
+ #运行locust 输出到postgressql
 ```
 
 # 平台流程

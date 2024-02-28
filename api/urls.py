@@ -8,5 +8,10 @@ urlpatterns = [
 
     path("perf/createPlan", views.create_plan_view, name="create_plan"),
     path("perf/getPlanTableData", views.get_plan_view, name="get_plan"),
+    path("perf/executePlan", views.execute_plan_view, name="exec_plan"),
+
+    path("perf/getTestRecord", views.get_test_record_view, name="test_record"),
+    path("perf/stopExecutePlan", views.stop_execute_plan_view, name="stop_test"),
+
     path("run_task", views.run_task_view, name="run"),
 ]

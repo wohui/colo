@@ -35,3 +35,12 @@ export function getTableDataApi(params: Table.GetTableRequestData) {
     params
   })
 }
+
+/**  */
+export function executePerfPlanApi(data: Table.CreateOrUpdateTableRequestData) {
+  return request <Table.CommonResponseData>({
+    url: "perf/executePlan",
+    method: "post",
+    data
+  })
+}

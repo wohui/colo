@@ -113,7 +113,7 @@ export const constantRoutes: RouteRecordRaw[] = [
       },
       {
         path: "testRecord",
-        component: () => import("@/views/table/vxe-table/index.vue"),
+        component: () => import("@/views/perf/testRecord.vue"),
         name: "TestRecord",
         meta: {
           title: "测试记录",

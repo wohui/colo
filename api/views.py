@@ -2,6 +2,8 @@ import json
 
 from django.http import JsonResponse
 
+from api.models import Plan, TestRecord
+from util.cmd import CMD
 from util.file import LocustFile
 
 
@@ -30,22 +32,45 @@ def test_generate(request):
     return JsonResponse(res, safe=False)
 
 
-def get_plan_view(request):
+def execute_plan_view(request):
+    plan_info = json.loads(request.body)
+    # 执行locust命令
+    cmd_handle = CMD()
+    pid = cmd_handle.run(
+        'locust --timescale --headless --override-plan-name 228002 -f .\locust_case\locustfile.py --run-time 1m')
+    print(f'pid--{pid}')
+    # 生成测试执行记录，在测试执行记录页面查询和停止
+    record_info = {
+        'plan_name': plan_info['name'],
+        'pid': pid
+    }
+    TestRecord.objects.create(**record_info)
+    # check_res_list = Plan.objects.filter().values()
+    res = {
+        'code': 0
+    }
+    return JsonResponse(res, safe=False)
+
+
+def get_test_record_view(request):
+    query_res = TestRecord.objects.filter().values()
     res = {
         'data': {
-            'total': 24,
-            'list': [{
-                'name': "用户压测",
-                "url": "http://192.68.1.101:8888",
-                'ratio': 11
-            },
-                {
-                    'name': "登录试试",
-                    "url": "http://192.68.10.201:6666",
-                    'ratio': 22
-                }]
+            'total': len(query_res),
+            'list': list(query_res)
         },
         'code': 0,
+    }
+    return JsonResponse(res, safe=False)
+
+
+def stop_execute_plan_view(request):
+    pid = json.loads(request.body)['pid']
+    # 执行locust命令
+    cmd_handle = CMD()
+    cmd_handle.kill_process(int(pid))
+    res = {
+        'code': 0
     }
     return JsonResponse(res, safe=False)
 
@@ -57,38 +82,25 @@ def create_plan_view(request):
     3、
     """
     plan_info = json.loads(request.body)
-    task_info = {
-        'name': 'test_plan_1',
-        'locust_data': [
-            {
-                "host": "http://192.168.0.101:8000",
-                "path": "/get_data/test"
-            },
-            {
-                "host": "http://192.168.0.101:8000",
-                "path": "/say_hello/hui"
-            },
-            {
-                "host": "http://192.168.0.101:8000",
-                "path": "/t1"
-            },
-        ],
 
-    }
+    Plan.objects.create(**plan_info)
+    # check_res_list = Plan.objects.filter().values()
 
     res = {
         'data': {
-            'total': 24,
-            'list': [{
-                'name': "1",
-                "url": "baidu",
-                'ratio': 11
-            },
-                {
-                    'name': "2",
-                    "url": "baidu",
-                    'ratio': 22
-                }]
+
+        },
+        'code': 0,
+    }
+    return JsonResponse(res, safe=False)
+
+
+def get_plan_view(request):
+    query_res = Plan.objects.filter().values()
+    res = {
+        'data': {
+            'total': len(query_res),
+            'list': list(query_res)
         },
         'code': 0,
     }
