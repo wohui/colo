@@ -95,7 +95,7 @@ export const constantRoutes: RouteRecordRaw[] = [
     children: [
        {
         path: "script",
-        component: () => import("@/views/perf/plan.vue"),
+        component: () => import("@/views/perf/script.vue"),
         name: "Script",
         meta: {
           title: "脚本管理", // 脚本上传，脚本调试，脚本运行

@@ -13,5 +13,7 @@ urlpatterns = [
     path("perf/getTestRecord", views.get_test_record_view, name="test_record"),
     path("perf/stopExecutePlan", views.stop_execute_plan_view, name="stop_test"),
 
+    path("perf/getAllScript", views.get_all_script_view, name="get_all_script"),
+
     path("run_task", views.run_task_view, name="run"),
 ]

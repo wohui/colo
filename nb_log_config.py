@@ -39,7 +39,7 @@ DISPLAY_BACKGROUD_COLOR_IN_CONSOLE = True  # 在控制台是否显示彩色块�
 AUTO_PATCH_PRINT = True  # 是否自动打print的猴子补丁，如果打了猴子补丁，print自动变色和可点击跳转。
 
 # 以下是屏蔽控制台所谓的烦人提示项,如果要关闭,先了解下这三个提示是什么,有的pythoner又菜又爱屏蔽提示,然后不知道为什么,这样的人太烦人了.
-SHOW_PYCHARM_COLOR_SETINGS = True  # 有的人很反感启动代码时候提示教你怎么优化pycahrm控制台颜色，可以把这里设置为False  (怕提示颜色设置打扰你又不懂pycharm和python的颜色原理,就别抱怨颜色瞎眼)
+SHOW_PYCHARM_COLOR_SETINGS = False  # 有的人很反感启动代码时候提示教你怎么优化pycahrm控制台颜色，可以把这里设置为False  (怕提示颜色设置打扰你又不懂pycharm和python的颜色原理,就别抱怨颜色瞎眼)
 SHOW_NB_LOG_LOGO = False  # 有的人反感启动代码时候打印nb_log 的logo图形,可以设置为False
 SHOW_IMPORT_NB_LOG_CONFIG_PATH = True  # 是否打印读取的nb_log_config.py的文件位置.不懂pythonpath,不懂python导入模块机制的人,别屏蔽了,学习下  https://github.com/ydf0509/pythonpathdemo
 

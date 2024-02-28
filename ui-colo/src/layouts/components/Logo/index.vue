@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { useLayoutMode } from "@/hooks/useLayoutMode"
-import logo from "@/assets/layouts/logo_1.png?url"
-import logoText1 from "@/assets/layouts/logo_1.png?url"
-import logoText2 from "@/assets/layouts/logo_1.png?url"
+import logo from "@/assets/layouts/logo.png?url"
+import logoText1 from "@/assets/layouts/logo.png?url"
+import logoText2 from "@/assets/layouts/logo.png?url"
 
 interface Props {
   collapse?: boolean

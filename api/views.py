@@ -7,10 +7,13 @@ from util.cmd import CMD
 from util.file import LocustFile
 
 from nb_log import get_logger
+
 # 会写到文件中
 logger = get_logger('colo_log',
                     log_filename='colo.log',
                     error_log_filename='colo_error.log')
+
+
 # logger = get_logger('log',)
 
 # Create your views here.
@@ -54,6 +57,26 @@ def execute_plan_view(request):
     # check_res_list = Plan.objects.filter().values()
     res = {
         'code': 0
+    }
+    return JsonResponse(res, safe=False)
+
+
+def get_all_script_view(request):
+    res = {
+        'data': {
+            'total': 6,
+            'list': [
+                {
+                    'name': '谢谢',
+                    'user': '库萨克'
+                },
+                {
+                    'name': '溜溜',
+                    'user': '滴滴答答'
+                }
+            ]
+        },
+        'code': 0,
     }
     return JsonResponse(res, safe=False)
 
