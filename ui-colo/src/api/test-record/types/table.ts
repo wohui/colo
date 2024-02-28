@@ -6,7 +6,10 @@ export interface GetTableRequestData {
   /** 查询条数 */
   size: number
 }
-
+export interface StopTestPlanRequestData {
+  /** 当前页码 */
+  pid: string
+}
 export interface GetTableData {
   createTime: string
   pid: string

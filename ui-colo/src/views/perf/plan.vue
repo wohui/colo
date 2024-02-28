@@ -120,6 +120,9 @@ const executePerfPlan = () => {
   executePerfPlanApi({
     id: '123' || undefined,
     name: '22' || undefined,
+    url: '22' || undefined,
+    req_data: '22' || undefined,
+    ratio: '22' || undefined,
   })
       .then(({data}) => {
         console.log(data)

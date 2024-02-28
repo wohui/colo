@@ -6,6 +6,12 @@ from api.models import Plan, TestRecord
 from util.cmd import CMD
 from util.file import LocustFile
 
+from nb_log import get_logger
+# 会写到文件中
+logger = get_logger('colo_log',
+                    log_filename='colo.log',
+                    error_log_filename='colo_error.log')
+# logger = get_logger('log',)
 
 # Create your views here.
 
@@ -38,7 +44,7 @@ def execute_plan_view(request):
     cmd_handle = CMD()
     pid = cmd_handle.run(
         'locust --timescale --headless --override-plan-name 228002 -f .\locust_case\locustfile.py --run-time 1m')
-    print(f'pid--{pid}')
+    logger.info(f'pid--{pid}')
     # 生成测试执行记录，在测试执行记录页面查询和停止
     record_info = {
         'plan_name': plan_info['name'],

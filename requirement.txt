@@ -6,3 +6,4 @@ psycopg2-binary==2.9.9
 mysqlclient==2.1.0
 pymysql==1.1.0
 docker== 7.0.0
+nb_log==12.3

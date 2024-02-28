@@ -6,6 +6,12 @@ import subprocess
 import os
 import signal
 import logging
+# 会写到文件中
+from nb_log import get_logger
+logger = get_logger('colo_log',
+                    log_filename='colo.log',
+                    error_log_filename='colo_error.log')
+
 class CMD():
     def __init__(self):
         self.cmd_list = []
@@ -21,17 +27,27 @@ class CMD():
             # 根据进程ID获取进程对象
             process = psutil.Process(pid)
             process_status = process.status()
-            print(f"进程状态为: {process_status}")
             # os.kill(pid, signal.SIGTERM)
             process.terminate()
-            logging.info('Locust已停止')
+            logger.info(f"进程id-{pid}已经停止")
         except psutil.NoSuchProcess:
-            print("指定的进程ID不存在")
+            logger.error(f"kill_process发生错误，指定的进程ID-{pid}-不存在")
 
         # 给 locust 进程发送终止信号
 
 if __name__ == '__main__':
-        print('试试')
+    from nb_log import get_logger
+
+    # 会写到文件中
+    logger = get_logger('colo_log',
+                        log_filename='colo.log',
+                        error_log_filename='colo_error.log')
+    # logger = get_logger('log',)
+    logger.info(1233)
+    import sys
+    print('试试')
+    print(sys.path)
+    print(sys.path[1])
         # cmd_handle = CMD()
         # cmd_handle.kill_process(19240)
         # id = cmd_handle.run('locust -f  ../locust_case/locustfile.py  --timescale --headless --override-plan-name 2331')
