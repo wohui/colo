@@ -75,8 +75,13 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
 </script>
 <template>
   <div class="app-container">
+
     <el-card v-loading="loading" shadow="never">
       <div class="toolbar-wrapper">
+            <div>
+          <el-button type="primary" :icon="CirclePlus" @click="dialogVisible = true">上传脚本</el-button>
+          <el-button type="danger" :icon="Delete">批量删除</el-button>
+        </div>
         <div>
           <el-tooltip content="刷新当前页">
             <el-button type="primary" :icon="RefreshRight" circle @click="getTableData"/>
@@ -86,17 +91,18 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
       <div class="table-wrapper">
         <el-table :data="tableData">
           <el-table-column type="selection" width="50" align="center"/>
-          <el-table-column prop="name1" label="脚本名称" align="center"/>
-          <el-table-column prop="user1" label="维护人" align="center"/>
+          <el-table-column prop="name" label="脚本名称" align="center"/>
+          <el-table-column prop="user" label="维护人" align="center"/>
           <el-table-column prop="status" label="状态" align="center">
             <template #default="scope">
               <el-tag v-if="scope.row.status" type="success" effect="plain">启用</el-tag>
               <el-tag v-else type="danger" effect="plain">禁用</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="createTime" label="创建时间" align="center"/>
+          <el-table-column prop="create_time" label="创建时间" align="center"/>
           <el-table-column fixed="right" label="操作" width="240" align="center">
             <template #default="scope">
+              <el-button type="primary" text bg size="small" @click="handleStop(123)">修改</el-button>
               <el-button type="primary" text bg size="small" @click="handleStop(123)">详情</el-button>
             </template>
           </el-table-column>

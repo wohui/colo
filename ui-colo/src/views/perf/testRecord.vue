@@ -50,7 +50,7 @@ const handleStop = (pid: int) => {
   stopExecutePlanApi({
     pid: pid,
   })
-      .then(({data}) => {
+      .then((data) => {
         console.log(data)
       })
       .catch(() => {
@@ -62,6 +62,10 @@ const handleStop = (pid: int) => {
 
 const handleSearch = () => {
   paginationData.currentPage === 1 ? getTableData() : (paginationData.currentPage = 1)
+}
+
+const handleToLink = (link:string) => {
+ window.open(link,'_blank')
 }
 /** 监听分页参数的变化 */
 watch([() => paginationData.currentPage, () => paginationData.pageSize], getTableData, {immediate: true})
@@ -102,11 +106,12 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
               <el-tag v-else type="danger" effect="plain">禁用</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="createTime" label="创建时间" align="center"/>
+          <el-table-column prop="created_at" label="创建时间" align="center"/>
           <el-table-column fixed="right" label="操作" width="240" align="center">
             <template #default="scope">
+              <el-button type="primary" text bg size="small" ><a href=".168.0.101:3000/d/qjIIww4Zz/colo_test_2" target="_blank">监控</a></el-button>
               <el-button type="primary" text bg size="small">详情</el-button>
-              <el-button type="primary" text bg size="small" @click="handleStop(scope.row.pid)">停止</el-button>
+              <el-button type="danger" text bg size="small" @click="handleStop(scope.row.pid)">停止</el-button>
             </template>
           </el-table-column>
         </el-table>

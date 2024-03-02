@@ -190,11 +190,10 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
               <el-tag v-else type="danger" effect="plain">禁用</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="createTime" label="创建时间" align="center"/>
+          <el-table-column prop="created_at" label="创建时间" align="center"/>
           <el-table-column fixed="right" label="操作" width="240" align="center">
             <template #default="scope">
               <el-button type="primary" text bg size="small" @click="handleExecute(scope.row)">开始压测</el-button>
-              <el-button type="primary" text bg size="small" @click="handleStop(scope.row)">停止</el-button>
               <el-button type="primary" text bg size="small" @click="handleUpdate(scope.row)">修改</el-button>
               <el-button type="danger" text bg size="small" @click="handleDelete(scope.row)">删除</el-button>
             </template>

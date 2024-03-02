@@ -1,5 +1,4 @@
 import docker
-import docker
 client = docker.DockerClient('tcp://127.0.0.1:2375')
 
 def docker_test():

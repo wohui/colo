@@ -3,11 +3,14 @@
 这是一个基于Python+Locust+Grafana+Vue的性能测试平台，追求简单化执行性能测试，平台化集成脚本管理、场景配置、压力配置、任务管理、监控报警等
 是使用Python+Locust搭建一个性能测试平台，也想通过Grafana做个监控大盘的，会是一个不错的选择。
 （开发中）
+
 * 简单
 * 平台化
 * 易扩展
 
-# 技术架构
+# 项目架构
+
+## 技术栈
 
 前端：vue3+element-ui
 
@@ -16,6 +19,10 @@
 性能引擎：locust
 
 监控系统：Grafana+postgressql（timescale）
+
+## 架构图
+
+![系统简要架构图](assets/system_framework.png)
 
 # 部署
 
@@ -62,7 +69,7 @@ python3 manage.py runserver 0.0.0.0:8000
 # 运行
 
 浏览器打开访问localhost:3333
-![img.png](img.png)
+![img.png](assets/img.png)
 
 ## 平台操作
 
