@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import {reactive, ref, watch} from "vue"
-import {
-  getTableDataApi,stopExecutePlanApi
-} from "@/api/test-record"
+import {onMounted, reactive, ref, watch} from "vue"
+import {onBeforeRouteLeave, onBeforeRouteUpdate, useRoute} from "vue-router";
+import {getTableDataApi, stopExecutePlanApi} from "@/api/test-record"
 import {type GetTableData} from "@/api/test-record/types/table"
-import {ElMessage, ElMessageBox, FormInstance} from "element-plus"
-import {CirclePlus, Delete, Refresh, RefreshRight, Search} from "@element-plus/icons-vue"
+import {FormInstance} from "element-plus"
+import {Refresh, RefreshRight, Search} from "@element-plus/icons-vue"
 import {usePagination} from "@/hooks/usePagination"
 
 defineOptions({
@@ -31,7 +30,6 @@ const getTableData = () => {
   getTableDataApi({
     currentPage: paginationData.currentPage,
     size: paginationData.pageSize,
-    name: searchData.name || undefined,
   })
       .then(({data}) => {
         paginationData.total = data.total
@@ -45,7 +43,7 @@ const getTableData = () => {
         loading.value = false
       })
 }
-const handleStop = (pid: int) => {
+const handleStop = (pid: number) => {
   loading.value = true
   stopExecutePlanApi({
     pid: pid,
@@ -64,9 +62,11 @@ const handleSearch = () => {
   paginationData.currentPage === 1 ? getTableData() : (paginationData.currentPage = 1)
 }
 
-const handleToLink = (link:string) => {
- window.open(link,'_blank')
-}
+onMounted(() => {
+
+  // getTableData()
+})
+
 /** 监听分页参数的变化 */
 watch([() => paginationData.currentPage, () => paginationData.pageSize], getTableData, {immediate: true})
 
@@ -109,7 +109,8 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column prop="created_at" label="创建时间" align="center"/>
           <el-table-column fixed="right" label="操作" width="240" align="center">
             <template #default="scope">
-              <el-button type="primary" text bg size="small" ><a href="http://192.168.0.101:3000/d/qjIIww4Zz/colo_test_2" target="_blank">监控</a></el-button>
+              <el-button type="primary" text bg size="small"><a :href="scope.row.monitor_url" target="_blank">监控</a>
+              </el-button>
               <el-button type="primary" text bg size="small">详情</el-button>
               <el-button type="danger" text bg size="small" @click="handleStop(scope.row.pid)">停止</el-button>
             </template>

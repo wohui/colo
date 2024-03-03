@@ -1,5 +1,6 @@
 import { request } from "@/utils/service"
 import type * as Table from "./types/planTable"
+import {CreateOrUpdateTableRequestData} from "./types/planTable";
 
 /** 增 */
 export function createTableDataApi(data: Table.CreateOrUpdateTableRequestData) {
@@ -37,7 +38,7 @@ export function getTableDataApi(params: Table.GetTableRequestData) {
 }
 
 /**  */
-export function executePerfPlanApi(data: Table.CreateOrUpdateTableRequestData) {
+export function executePerfPlanApi(data: Table.GetTableData) {
   return request <Table.CommonResponseData>({
     url: "perf/executePlan",
     method: "post",

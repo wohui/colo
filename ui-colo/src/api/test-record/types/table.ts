@@ -8,13 +8,14 @@ export interface GetTableRequestData {
 }
 export interface StopTestPlanRequestData {
   /** 当前页码 */
-  pid: string
+  pid: number
 }
 export interface GetTableData {
   createTime: string
   pid: string
   status: boolean
   plan_name: string
+  monitor_url: string
 }
 
 export type GetTableResponseData = ApiResponseData<{

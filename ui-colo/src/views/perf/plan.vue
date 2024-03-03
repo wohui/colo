@@ -11,12 +11,13 @@ import {type CreateOrUpdateTableRequestData, type GetTableData} from "@/api/plan
 import {ElMessage, ElMessageBox, type FormInstance, type FormRules} from "element-plus"
 import {CirclePlus, Delete, Refresh, RefreshRight, Search} from "@element-plus/icons-vue"
 import {usePagination} from "@/hooks/usePagination"
+import {useRouter} from "vue-router";
 
 defineOptions({
   // 命名当前组件
-  name: "ElementPlus"
+  name: "Plan"
 })
-
+const router = useRouter()
 const loading = ref<boolean>(false)
 const {paginationData, handleCurrentChange, handleSizeChange} = usePagination()
 
@@ -81,7 +82,7 @@ const handleUpdate = (row: GetTableData) => {
 }
 const handleExecute = (row: GetTableData) => {
   // 执行测试计划，生成测试记录
-  executePerfPlan()
+  executePerfPlan(row)
   // formData.value = JSON.parse(JSON.stringify(row))
 }
 const handleStop = (row: GetTableData) => {
@@ -115,19 +116,12 @@ const getTableData = () => {
         loading.value = false
       })
 }
-const executePerfPlan = () => {
+// 传递的是表格对象的整行信息row
+const executePerfPlan = (row: GetTableData) => {
   loading.value = true
-  executePerfPlanApi({
-    id: '123' || undefined,
-    name: '22' || undefined,
-    host: '22' || undefined,
-    script: '22' || undefined,
-    user_count: '22' || undefined,
-    duration: '22' || undefined,
-    owner: '22' || undefined,
-  })
+  executePerfPlanApi(row)
       .then(({data}) => {
-        console.log(data)
+        router.push('/perf/testRecord')
       })
       .catch(() => {
         tableData.value = []
@@ -184,7 +178,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column prop="name" label="计划名称" align="center"/>
           <el-table-column prop="owner" label="负责人" align="center"/>
           <el-table-column prop="user_count" label="并发用户数" align="center"/>
-          <el-table-column prop="duration" label="压测时长" align="center"/>
+          <el-table-column prop="duration" label="压测时长（秒）" align="center"/>
           <el-table-column prop="status" label="状态" align="center">
             <template #default="scope">
               <el-tag v-if="scope.row.status" type="success" effect="plain">启用</el-tag>
@@ -232,20 +226,20 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         <el-menu-item index="3">其他</el-menu-item>
       </el-menu>
 
-      <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px" label-position="left">
+      <el-form ref="formRef" :model="formData" :rules="formRules" label-width="110px" label-position="left">
         <el-form-item prop="planName" label="计划名称" v-show="planActiveIndex=='1'">
           <el-input v-model="formData.name" placeholder="请输入"/>
         </el-form-item>
         <el-form-item prop="host" label="目标环境" v-show="planActiveIndex=='1'">
           <el-input v-model="formData.host" placeholder="请输入"/>
         </el-form-item>
-         <el-form-item prop="script" label="压测脚本" v-show="planActiveIndex=='1'">
+        <el-form-item prop="script" label="压测脚本" v-show="planActiveIndex=='1'">
           <el-input v-model="formData.script" placeholder="请输入"/>
         </el-form-item>
-         <el-form-item prop="user_count" label="并发用户数" v-show="planActiveIndex=='2'">
+        <el-form-item prop="user_count" label="并发用户数" v-show="planActiveIndex=='2'">
           <el-input v-model="formData.user_count" placeholder="请输入"/>
         </el-form-item>
-         <el-form-item prop="test_time" label="压测时长" v-show="planActiveIndex=='2'">
+        <el-form-item prop="test_time" label="压测时长（秒）" v-show="planActiveIndex=='2'">
           <el-input v-model="formData.duration" placeholder="请输入"/>
         </el-form-item>
       </el-form>

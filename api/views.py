@@ -1,8 +1,9 @@
 import json
+import time
 
 from django.http import JsonResponse
 from nb_log import get_logger
-
+from django.core.paginator import Paginator
 from api.models import Plan, TestRecord
 from util.cmd import CMD
 from util.file import LocustFile
@@ -41,26 +42,54 @@ def test_generate(request):
 
 
 def execute_plan_view(request):
-    plan_info = json.loads(request.body)
-    # 执行locust命令
-    cmd_handle = CMD()
-    pid = cmd_handle.run(
-        'locust --timescale --headless --override-plan-name 228002 -f .\locust_case\locustfile.py --run-time 1m')
-    logger.info(f'pid--{pid}')
-    # 生成测试执行记录，在测试执行记录页面查询和停止
-    record_info = {
-        'plan_name': plan_info['name'],
-        'pid': pid
-    }
-    TestRecord.objects.create(**record_info)
+    try:
+        msg = ''
+        plan_info = json.loads(request.body)
+        test_plan_name = f'{plan_info['name']}-{time.time_ns()}'
+        script_path = '.\locust_case\locustfile.py'
+        duration = plan_info['duration']  # 单位 秒
+        locust_cmd = (f'locust --timescale --headless '
+                      f'--override-plan-name {test_plan_name} '
+                      f'-f {script_path} '
+                      f'--run-time {duration}')
+        # 执行locust命令
+        cmd_handle = CMD()
+        pid = cmd_handle.run(locust_cmd)
+        logger.info(f'pid--{pid}')
+        # 配置监控地址，根据生成的test_plan_name+提前配置好的grafana地址组成
+        monitor_url = f'http://192.168.0.101:3000/d/xh6zZMASk/colo_101?orgId=1&var-testplan={test_plan_name}&from=now-5m&to=now'
+        # 生成测试执行记录，在测试执行记录页面查询和停止
+        record_info = {
+            'plan_name': plan_info['name'],
+            'pid': pid,
+            'monitor_url': monitor_url
+        }
+        TestRecord.objects.create(**record_info)
+    except Exception as e:
+        logger.error(f'执行测试计划时发生错误-{e}')
+        msg = f'发生错误-{e}'
     # check_res_list = Plan.objects.filter().values()
     res = {
-        'code': 0
+        'code': 0,
+        'msg': msg,
+        'data': [1,2,3]
     }
     return JsonResponse(res, safe=False)
 
 
 def get_all_script_view(request):
+    # page_size = int(request.GET.get('size'))
+    # page_number = int(request.GET.get('currentPage'))
+    #
+    # plan_query = Sc.objects.filter().values().order_by('-created_at')
+    #
+    # # 创建Paginator对象
+    # paginator = Paginator(plan_query, page_size)
+    #
+    # # 获取指定页数的数据
+    # page_obj = paginator.get_page(page_number)
+    # # 获取当前页的数据列表
+    # data_list = page_obj.object_list
     res = {
         'data': {
             'total': 6,
@@ -81,11 +110,23 @@ def get_all_script_view(request):
 
 
 def get_test_record_view(request):
-    query_res = TestRecord.objects.filter().values()
+    page_size = int(request.GET.get('size'))
+    page_number = int(request.GET.get('currentPage'))
+
+    test_record_query = TestRecord.objects.filter().values().order_by('-created_at')
+
+    # 创建Paginator对象
+    paginator = Paginator(test_record_query, page_size)
+
+    # 获取指定页数的数据
+    page_obj = paginator.get_page(page_number)
+    # 获取当前页的数据列表
+    data_list = page_obj.object_list
+
     res = {
         'data': {
-            'total': len(query_res),
-            'list': list(query_res)
+            'total': len(test_record_query),
+            'list': list(data_list)
         },
         'code': 0,
     }
@@ -144,11 +185,22 @@ def update_plan_view(request):
 
 
 def get_plan_view(request):
-    query_res = Plan.objects.filter().values()
+    page_size = int(request.GET.get('size'))
+    page_number = int(request.GET.get('currentPage'))
+
+    plan_query = Plan.objects.filter().values().order_by('-created_at')
+
+    # 创建Paginator对象
+    paginator = Paginator(plan_query, page_size)
+
+    # 获取指定页数的数据
+    page_obj = paginator.get_page(page_number)
+    # 获取当前页的数据列表
+    data_list = page_obj.object_list
     res = {
         'data': {
-            'total': len(query_res),
-            'list': list(query_res)
+            'total': len(plan_query),
+            'list': list(data_list)
         },
         'code': 0,
     }

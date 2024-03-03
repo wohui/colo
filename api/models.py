@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 class Plan(models.Model):
@@ -10,17 +11,20 @@ class Plan(models.Model):
     script = models.TextField()
     user_count = models.IntegerField(default=0)
     duration = models.IntegerField(default=0)
-    owner = models.CharField(max_length=32,default=None)
+    owner = models.CharField(max_length=32, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.id
+
+
 class TestRecord(models.Model):
     """colo 测试计划表"""
     id = models.AutoField(primary_key=True)
     pid = models.CharField(max_length=255)
     plan_name = models.CharField(max_length=255)
+    monitor_url = models.CharField(max_length=255, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

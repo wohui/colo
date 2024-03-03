@@ -77,6 +77,9 @@ python3 manage.py runserver 0.0.0.0:8000
 
 ### 测试计划
 
+![image.png](assets/image_plan.png)
+
+### 测试记录
 
 # 手动运行locust
 
