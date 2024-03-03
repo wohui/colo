@@ -36,7 +36,7 @@ export default (configEnv: ConfigEnv): UserConfigExport => {
       proxy: {
         "/api": {
           // target: "https://mock.mengxuegu.com/mock/63218b5fb4c53348ed2bc212",
-          target: "http://127.0.0.1:8000",
+          target: "http://127.0.0.1:8000",//代理到本地部署的django后端API服务
           ws: true,
           /** 是否允许跨域 */
           changeOrigin: true,

@@ -1,15 +1,11 @@
 {
-  "name": "v3-admin-vite",
-  "version": "4.4.0",
+  "name": "ui-colo",
+  "version": "1.0.0",
   "description": "",
   "author": {
-    "name": "",
-    "email": "",
+    "name": "zhonghui",
+    "email": "907569450@qq.com",
     "url": ""
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/un-pany/v3-admin-vite.git"
   },
   "type": "module",
   "scripts": {
@@ -87,10 +83,10 @@
     ]
   },
   "keywords": [
+    "performance",
     "vue",
     "vue3",
     "admin",
-    "vue-admin",
     "vue3-admin",
     "vite",
     "vite-admin",
