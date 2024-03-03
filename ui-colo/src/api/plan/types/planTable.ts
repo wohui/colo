@@ -3,7 +3,8 @@ export interface CreateOrUpdateTableRequestData {
   name: string
   host: string
   script: string
-  user_count: string
+  user_count: number
+  spawn_rate: number
   duration: string
   owner: string
 }

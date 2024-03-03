@@ -50,7 +50,7 @@ if __name__ == '__main__':
     print(sys.path[1])
         # cmd_handle = CMD()
         # cmd_handle.kill_process(19240)
-        # id = cmd_handle.run('locust -f  ../locust_case/locustfile.py  --timescale --headless --override-plan-name 2331')
+        # id = cmd_handle.run('locust -f  ../locust_case/locustfile_2.py  --timescale --headless --override-plan-name 2331')
         # print(id)
         # import subprocess
         # import os
@@ -66,7 +66,7 @@ if __name__ == '__main__':
         #         print('Locust 已经在运行')
         #     else:
         #         # 启动 locust 进程
-        #         locust_process = subprocess.Popen('locust -f  ../locust_case/locustfile.py  --timescale --headless --override-plan-name 23322', shell=False)
+        #         locust_process = subprocess.Popen('locust -f  ../locust_case/locustfile_2.py  --timescale --headless --override-plan-name 23322', shell=False)
         #         print(f'id={locust_process.pid}')
         #         print('Locust 已启动')
         #

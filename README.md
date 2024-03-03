@@ -81,14 +81,28 @@ python3 manage.py runserver 0.0.0.0:8000
 
 ### 测试记录
 
+开始压测后，会在这里生成一个记录，可以停止和打开监控大盘
+
+![image.png](assets/image_record.png)
+
+### 监控大盘展示
+
+生成唯一的testplan,交给grafana来聚合，展示
+
+![image.png](assets/image_monitor1.png)
+
+![image.png](assets/image_monitor2.png)
+
+![image.png](assets/image_monitor3.png)
+
+# 平台流程
+
 # 手动运行locust
 
 ```shell
  locust --timescale --headless --override-plan-name 0108
  #运行locust 输出到postgressql
 ```
-
-# 平台流程
 
 # 注意点记录：
 

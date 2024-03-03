@@ -45,13 +45,21 @@ def execute_plan_view(request):
     try:
         msg = ''
         plan_info = json.loads(request.body)
-        test_plan_name = f'{plan_info['name']}-{time.time_ns()}'
-        script_path = '.\locust_case\locustfile.py'
+        host = 'http://192.168.0.101:8000'
+        user_count = plan_info['user_count']
+        spawn_rate = plan_info['spawn_rate'] #--spawn-rate
+        script = plan_info['script']
         duration = plan_info['duration']  # 单位 秒
-        locust_cmd = (f'locust --timescale --headless '
-                      f'--override-plan-name {test_plan_name} '
-                      f'-f {script_path} '
-                      f'--run-time {duration}')
+        test_plan_name = f'{plan_info['name']}-{time.time_ns()}'
+        script_path = f'.\locust_case\\{script}'
+        locust_cmd = (f'locust --timescale --headless'
+                      f' --host {host}'
+                      f' -u {user_count}'
+                      f' -r {spawn_rate}'
+                      f' --override-plan-name {test_plan_name}'
+                      f' -f {script_path}'
+                      f' --run-time {duration}s')
+
         # 执行locust命令
         cmd_handle = CMD()
         pid = cmd_handle.run(locust_cmd)

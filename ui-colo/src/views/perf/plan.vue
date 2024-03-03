@@ -26,10 +26,11 @@ const DEFAULT_FORM_DATA: CreateOrUpdateTableRequestData = {
   id: undefined,
   name: "测试登录",
   host: "http://10.1.0.222:6666",
-  script: "",
-  user_count: "1",
-  duration: "5",
-  owner: "8998",
+  script: "locustfile_1.py",
+  user_count: 1,
+  spawn_rate: 1,
+  duration: '60',
+  owner: "hui",
 }
 const planActiveIndex = ref('1')
 const dialogVisible = ref<boolean>(false)
@@ -178,6 +179,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column prop="name" label="计划名称" align="center"/>
           <el-table-column prop="owner" label="负责人" align="center"/>
           <el-table-column prop="user_count" label="并发用户数" align="center"/>
+          <el-table-column prop="spawn_rate" label="每秒启动用户" align="center"/>
           <el-table-column prop="duration" label="压测时长（秒）" align="center"/>
           <el-table-column prop="status" label="状态" align="center">
             <template #default="scope">
@@ -238,6 +240,9 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         </el-form-item>
         <el-form-item prop="user_count" label="并发用户数" v-show="planActiveIndex=='2'">
           <el-input v-model="formData.user_count" placeholder="请输入"/>
+        </el-form-item>
+        <el-form-item prop="spawn_rate" label="每秒启动用户" v-show="planActiveIndex=='2'">
+          <el-input v-model="formData.spawn_rate" placeholder="请输入"/>
         </el-form-item>
         <el-form-item prop="test_time" label="压测时长（秒）" v-show="planActiveIndex=='2'">
           <el-input v-model="formData.duration" placeholder="请输入"/>
