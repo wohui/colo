@@ -104,6 +104,16 @@ python3 manage.py runserver 0.0.0.0:8000
  #运行locust 输出到postgressql
 ```
 
+# 🙏 致谢/Acknowledgments
+
+* [locust-plugins](https://github.com/SvenskaSpel/locust-plugins)
+* [v3-admin](https://github.com/un-pany/v3-admin-vite/)
+
+# TODO
+
+* [ ]  脚本上传管理
+* [ ]  分布式执行
+
 # 注意点记录：
 
 mysqlclient无法安装，在settings使用pymysql转换
@@ -139,9 +149,3 @@ export DOCKER_HOST=tcp://localhost:2375
 重启生效
 
 source .bash_profile
-
-# todo
-
-* [ ]  脚本上传管理
-* [ ]  分布式执行
-* [ ]
