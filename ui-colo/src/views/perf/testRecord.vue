@@ -109,7 +109,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column prop="created_at" label="创建时间" align="center"/>
           <el-table-column fixed="right" label="操作" width="240" align="center">
             <template #default="scope">
-              <el-button type="primary" text bg size="small" ><a href=".168.0.101:3000/d/qjIIww4Zz/colo_test_2" target="_blank">监控</a></el-button>
+              <el-button type="primary" text bg size="small" ><a href="http://192.168.0.101:3000/d/qjIIww4Zz/colo_test_2" target="_blank">监控</a></el-button>
               <el-button type="primary" text bg size="small">详情</el-button>
               <el-button type="danger" text bg size="small" @click="handleStop(scope.row.pid)">停止</el-button>
             </template>

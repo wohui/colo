@@ -1,9 +1,11 @@
 export interface CreateOrUpdateTableRequestData {
   id?: string
   name: string
-  url: string
-  req_data: string
-  ratio: string
+  host: string
+  script: string
+  user_count: string
+  duration: string
+  owner: string
 }
 
 export interface GetTableRequestData {

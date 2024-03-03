@@ -1,12 +1,11 @@
 import json
 
 from django.http import JsonResponse
+from nb_log import get_logger
 
 from api.models import Plan, TestRecord
 from util.cmd import CMD
 from util.file import LocustFile
-
-from nb_log import get_logger
 
 # 会写到文件中
 logger = get_logger('colo_log',
@@ -67,11 +66,11 @@ def get_all_script_view(request):
             'total': 6,
             'list': [
                 {
-                    'name': '谢谢',
+                    'name': '获取订单详情接口',
                     'user': '库萨克'
                 },
                 {
-                    'name': '溜溜',
+                    'name': '设置会员信息接口',
                     'user': '滴滴答答'
                 }
             ]
@@ -113,6 +112,26 @@ def create_plan_view(request):
     plan_info = json.loads(request.body)
 
     Plan.objects.create(**plan_info)
+    # check_res_list = Plan.objects.filter().values()
+
+    res = {
+        'data': {
+
+        },
+        'code': 0,
+    }
+    return JsonResponse(res, safe=False)
+
+
+def update_plan_view(request):
+    """
+    1.生成测试计划，保存任务信息到数据库
+    2.可以编辑？
+    3、
+    """
+    plan_info = json.loads(request.body)
+    plan_id = plan_info['id']
+    Plan.objects.filter(id=plan_id).update(**plan_info)
     # check_res_list = Plan.objects.filter().values()
 
     res = {

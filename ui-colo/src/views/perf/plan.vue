@@ -24,9 +24,11 @@ const {paginationData, handleCurrentChange, handleSizeChange} = usePagination()
 const DEFAULT_FORM_DATA: CreateOrUpdateTableRequestData = {
   id: undefined,
   name: "测试登录",
-  url: "http://10.1.0.222:6666",
-  req_data: "",
-  ratio: '19'
+  host: "http://10.1.0.222:6666",
+  script: "",
+  user_count: "1",
+  duration: "5",
+  owner: "8998",
 }
 const planActiveIndex = ref('1')
 const dialogVisible = ref<boolean>(false)
@@ -93,7 +95,6 @@ const tableData = ref<GetTableData[]>([])
 const searchFormRef = ref<FormInstance | null>(null)
 const searchData = reactive({
   name: "",
-  phone: ""
 })
 const getTableData = () => {
   loading.value = true
@@ -101,7 +102,6 @@ const getTableData = () => {
     currentPage: paginationData.currentPage,
     size: paginationData.pageSize,
     name: searchData.name || undefined,
-    phone: searchData.phone || undefined
   })
       .then(({data}) => {
         paginationData.total = data.total
@@ -120,9 +120,11 @@ const executePerfPlan = () => {
   executePerfPlanApi({
     id: '123' || undefined,
     name: '22' || undefined,
-    url: '22' || undefined,
-    req_data: '22' || undefined,
-    ratio: '22' || undefined,
+    host: '22' || undefined,
+    script: '22' || undefined,
+    user_count: '22' || undefined,
+    duration: '22' || undefined,
+    owner: '22' || undefined,
   })
       .then(({data}) => {
         console.log(data)
@@ -158,9 +160,6 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         <el-form-item prop="name" label="测试计划">
           <el-input v-model="searchData.name" placeholder="请输入"/>
         </el-form-item>
-        <!--        <el-form-item prop="phone" label="手机号">-->
-        <!--          <el-input v-model="searchData.phone" placeholder="请输入"/>-->
-        <!--        </el-form-item>-->
         <el-form-item>
           <el-button type="primary" :icon="Search" @click="handleSearch">查询</el-button>
           <el-button :icon="Refresh" @click="resetSearch">重置</el-button>
@@ -182,8 +181,10 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
       <div class="table-wrapper">
         <el-table :data="tableData">
           <el-table-column type="selection" width="50" align="center"/>
-          <el-table-column prop="name" label="测试计划" align="center"/>
-          <el-table-column prop="url" label="接口" align="center"/>
+          <el-table-column prop="name" label="计划名称" align="center"/>
+          <el-table-column prop="owner" label="负责人" align="center"/>
+          <el-table-column prop="user_count" label="并发用户数" align="center"/>
+          <el-table-column prop="duration" label="压测时长" align="center"/>
           <el-table-column prop="status" label="状态" align="center">
             <template #default="scope">
               <el-tag v-if="scope.row.status" type="success" effect="plain">启用</el-tag>
@@ -218,7 +219,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         v-model="dialogVisible"
         :title="formData.id === undefined ? '新增计划' : '修改计划'"
         @closed="resetForm"
-        width="30%"
+        width="40%"
     >
       <el-menu
           :default-active="planActiveIndex"
@@ -231,18 +232,21 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         <el-menu-item index="3">其他</el-menu-item>
       </el-menu>
 
-      <el-form ref="formRef" :model="formData" :rules="formRules" label-width="80px" label-position="left">
+      <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px" label-position="left">
         <el-form-item prop="planName" label="计划名称" v-show="planActiveIndex=='1'">
           <el-input v-model="formData.name" placeholder="请输入"/>
         </el-form-item>
-        <el-form-item prop="url" label="接口地址" v-if="formData.id === undefined">
-          <el-input v-model="formData.url" placeholder="请输入"/>
+        <el-form-item prop="host" label="目标环境" v-show="planActiveIndex=='1'">
+          <el-input v-model="formData.host" placeholder="请输入"/>
         </el-form-item>
-        <el-form-item prop="url" label="请求参数" v-if="formData.id === undefined">
-          <el-input v-model="formData.req_data" placeholder="请输入"/>
+         <el-form-item prop="script" label="压测脚本" v-show="planActiveIndex=='1'">
+          <el-input v-model="formData.script" placeholder="请输入"/>
         </el-form-item>
-        <el-form-item prop="url" label="流量占比" v-if="formData.id === undefined">
-          <el-input v-model="formData.ratio" placeholder="请输入"/>
+         <el-form-item prop="user_count" label="并发用户数" v-show="planActiveIndex=='2'">
+          <el-input v-model="formData.user_count" placeholder="请输入"/>
+        </el-form-item>
+         <el-form-item prop="test_time" label="压测时长" v-show="planActiveIndex=='2'">
+          <el-input v-model="formData.duration" placeholder="请输入"/>
         </el-form-item>
       </el-form>
       <template #footer>

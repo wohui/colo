@@ -66,12 +66,17 @@ python3 manage.py runserver 0.0.0.0:8000
 
 ```
 
-# 运行
+# 功能展示
 
 浏览器打开访问localhost:3333
-![img.png](assets/img.png)
 
-## 平台操作
+### 脚本管理
+
+![image.png](assets/image_script.png)
+脚本暂时还没规划好是保存在数据库还是在git上，TODO
+
+### 测试计划
+
 
 # 手动运行locust
 

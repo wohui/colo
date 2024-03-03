@@ -21,8 +21,8 @@ export function deleteTableDataApi(id: string) {
 /** 改 */
 export function updateTableDataApi(data: Table.CreateOrUpdateTableRequestData) {
   return request({
-    url: "table",
-    method: "put",
+    url: "perf/updatePlan",
+    method: "post",
     data
   })
 }
