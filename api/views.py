@@ -58,11 +58,16 @@ def execute_plan_view(request):
                       f' -r {spawn_rate}'
                       f' --override-plan-name {test_plan_name}'
                       f' -f {script_path}'
+                      f' --pghost 192.168.0.101'
+                      f' --pgport 5432'
+                      f' --pguser postgres'
+                      f' --pgpassword hui666666'
+                      f' --pgdatabase colo_test'
                       f' --run-time {duration}s')
-
         # 执行locust命令
         cmd_handle = CMD()
         pid = cmd_handle.run(locust_cmd)
+
         logger.info(f'pid--{pid}')
         # 配置监控地址，根据生成的test_plan_name+提前配置好的grafana地址组成
         monitor_url = f'http://192.168.0.101:3000/d/xh6zZMASk/colo_101?orgId=1&var-testplan={test_plan_name}&from=now-5m&to=now'
