@@ -49,7 +49,7 @@ const handleStop = (pid: number) => {
     pid: pid,
   })
       .then((data) => {
-        console.log(data)
+        getTableData()
       })
       .catch(() => {
       })
