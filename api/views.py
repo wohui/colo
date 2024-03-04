@@ -1,9 +1,11 @@
 import json
+import os
 import time
 
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 from nb_log import get_logger
-from django.core.paginator import Paginator
+
 from api.models import Plan, TestRecord
 from util.cmd import CMD
 from util.file import LocustFile
@@ -17,6 +19,18 @@ logger = get_logger('colo_log',
 # logger = get_logger('log',)
 
 # Create your views here.
+def start_locust_view(request):
+    body = request.GET.get('id')
+    logger.info('start1')
+    return JsonResponse({}, safe=False)
+
+
+def stop_locust_view(request):
+    logger.info('stop1')
+    body = request.GET.get('id')
+    print(body)
+    return JsonResponse({}, safe=False)
+
 
 def test_view(request):
     res = {
@@ -47,17 +61,22 @@ def execute_plan_view(request):
         plan_info = json.loads(request.body)
         host = 'http://192.168.0.101:8000'
         user_count = plan_info['user_count']
-        spawn_rate = plan_info['spawn_rate'] #--spawn-rate
-        script = plan_info['script']
+        spawn_rate = plan_info['spawn_rate']  # --spawn-rate
+        script_name = plan_info['script']
         duration = plan_info['duration']  # 单位 秒
         test_plan_name = f'{plan_info['name']}-{time.time_ns()}'
-        script_path = f'.\locust_case\\{script}'
+        # 获取当前文件绝对路径的的上2层目录
+        parent_directory = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        # 获取脚本的绝对路径
+        locust_file_path = os.path.join(parent_directory, "locust_case", f'{script_name}')
+        logger.info(f'脚本路径{locust_file_path}')
+        # script_path = f'.\locust_case\\{script}'
         locust_cmd = (f'locust --timescale --headless'
                       f' --host {host}'
                       f' -u {user_count}'
                       f' -r {spawn_rate}'
                       f' --override-plan-name {test_plan_name}'
-                      f' -f {script_path}'
+                      f' -f {locust_file_path}'
                       f' --pghost 192.168.0.101'
                       f' --pgport 5432'
                       f' --pguser postgres'
@@ -85,7 +104,7 @@ def execute_plan_view(request):
     res = {
         'code': 0,
         'msg': msg,
-        'data': [1,2,3]
+        'data': [1, 2, 3]
     }
     return JsonResponse(res, safe=False)
 

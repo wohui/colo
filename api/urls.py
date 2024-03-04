@@ -16,5 +16,7 @@ urlpatterns = [
 
     path("perf/getAllScript", views.get_all_script_view, name="get_all_script"),
 
-    path("run_task", views.run_task_view, name="run"),
+    path("test/start", views.start_locust_view, name="start"),
+    path("test/stop", views.stop_locust_view, name="stop"),
+
 ]
