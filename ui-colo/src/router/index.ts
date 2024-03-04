@@ -117,7 +117,7 @@ export const constantRoutes: RouteRecordRaw[] = [
         name: "TestRecord",
         meta: {
           title: "测试记录",
-          keepAlive: true
+          keepAlive: false
         }
       }
     ]
