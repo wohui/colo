@@ -102,17 +102,17 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column prop="plan_name" label="测试计划" align="center"/>
           <el-table-column prop="status" label="状态" align="center">
             <template #default="scope">
-              <el-tag v-if="scope.row.status" type="success" effect="plain">启用</el-tag>
-              <el-tag v-else type="danger" effect="plain">禁用</el-tag>
+              <el-tag v-if="scope.row.status==1" type="primary" effect="plain">测试中</el-tag>
+              <el-tag v-else-if="scope.row.status==2" type="success" effect="plain">测试完成</el-tag>
+              <el-tag v-else type="danger" effect="plain">异常</el-tag>
             </template>
           </el-table-column>
           <el-table-column prop="created_at" label="创建时间" align="center"/>
           <el-table-column fixed="right" label="操作" width="240" align="center">
             <template #default="scope">
-              <el-button type="primary" text bg size="small"><a :href="scope.row.monitor_url" target="_blank">监控</a>
+              <el-button type="primary" text bg size="small"><a :href="scope.row.monitor_url" target="_blank">监控地址</a>
               </el-button>
-              <el-button type="primary" text bg size="small">详情</el-button>
-              <el-button type="danger" text bg size="small" @click="handleStop(scope.row.pid)">停止</el-button>
+              <el-button type="danger" text bg size="small" @click="handleStop(scope.row.pid)">停止测试</el-button>
             </template>
           </el-table-column>
         </el-table>

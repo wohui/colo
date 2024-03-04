@@ -13,6 +13,7 @@ class Plan(models.Model):
     spawn_rate = models.IntegerField(default=1)
     duration = models.IntegerField(default=1)
     owner = models.CharField(max_length=32, default=None)
+    status = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -25,6 +26,7 @@ class TestRecord(models.Model):
     id = models.AutoField(primary_key=True)
     pid = models.CharField(max_length=255)
     plan_name = models.CharField(max_length=255)
+    status = models.IntegerField(default=0)
     monitor_url = models.CharField(max_length=255, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

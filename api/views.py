@@ -56,8 +56,10 @@ def test_generate(request):
 
 
 def execute_plan_view(request):
+    msg = ''
+    code = 0
     try:
-        msg = ''
+
         plan_info = json.loads(request.body)
         host = 'http://192.168.0.101:8000'
         user_count = plan_info['user_count']
@@ -85,24 +87,27 @@ def execute_plan_view(request):
                       f' --run-time {duration}s')
         # 执行locust命令
         cmd_handle = CMD()
-        pid = cmd_handle.run(locust_cmd)
-
-        logger.info(f'pid--{pid}')
-        # 配置监控地址，根据生成的test_plan_name+提前配置好的grafana地址组成
-        monitor_url = f'http://192.168.0.101:3000/d/xh6zZMASk/colo_101?orgId=1&var-testplan={test_plan_name}&from=now-5m&to=now'
-        # 生成测试执行记录，在测试执行记录页面查询和停止
-        record_info = {
-            'plan_name': plan_info['name'],
-            'pid': pid,
-            'monitor_url': monitor_url
-        }
-        TestRecord.objects.create(**record_info)
+        pid, status = cmd_handle.run(locust_cmd)
+        # 说明出现异常了，运行未成功
+        if pid == -1 or status != 1:
+            msg = '运行命令发生错误，请排查'
+            code = -1
+        else:
+            # 配置监控地址，根据生成的test_plan_name+提前配置好的grafana地址组成
+            monitor_url = f'http://192.168.0.101:3000/d/xh6zZMASk/colo_101?orgId=1&var-testplan={test_plan_name}&from=now-5m&to=now'
+            # 生成测试执行记录，在测试执行记录页面查询和停止
+            record_info = {
+                'plan_name': plan_info['name'],
+                'pid': pid,
+                'status': status,
+                'monitor_url': monitor_url
+            }
+            TestRecord.objects.create(**record_info)
     except Exception as e:
-        logger.error(f'执行测试计划时发生错误-{e}')
-        msg = f'发生错误-{e}'
-    # check_res_list = Plan.objects.filter().values()
+        logger.error(f'执行测试计划时发生异常-{e}')
+        msg = f'execute_plan_view捕捉到异常-{e}'
     res = {
-        'code': 0,
+        'code': code,
         'msg': msg,
         'data': [1, 2, 3]
     }
@@ -169,9 +174,17 @@ def stop_execute_plan_view(request):
     pid = json.loads(request.body)['pid']
     # 执行locust命令
     cmd_handle = CMD()
-    cmd_handle.kill_process(int(pid))
+    status = cmd_handle.kill_process(int(pid))
+    msg = ''
+    if status == 2:
+        TestRecord.objects.filter(pid=pid).update(status=2)
+        msg = '终止测试正常'
+    if status == 99:
+        TestRecord.objects.filter(pid=pid).update(status=99)
+        msg = '终止测试异常'
     res = {
-        'code': 0
+        'code': 0,
+        'msg': msg
     }
     return JsonResponse(res, safe=False)
 
