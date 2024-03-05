@@ -27,6 +27,7 @@ class TestRecord(models.Model):
     pid = models.CharField(max_length=255)
     plan_name = models.CharField(max_length=255)
     test_plan_id = models.CharField(max_length=255,default=None)
+    duration = models.IntegerField(default=0)
     status = models.IntegerField(default=0)
     owner = models.CharField(max_length=32, default=None)
     monitor_url = models.CharField(max_length=255, default=None)

@@ -100,6 +100,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column prop="pid" label="进程ID" align="center"/>
           <el-table-column prop="plan_name" label="测试计划" align="center"/>
           <el-table-column prop="owner" label="负责人" align="center"/>
+          <el-table-column prop="duration" label="压测时长" align="center"/>
           <el-table-column prop="status" label="状态" align="center">
             <template #default="scope">
               <el-tag v-if="scope.row.status==1" type="primary" effect="plain">测试中</el-tag>

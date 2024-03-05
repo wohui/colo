@@ -102,6 +102,7 @@ def execute_plan_view(request):
                 'test_plan_id': test_plan_id,
                 'plan_name': plan_info['name'],
                 'pid': pid,
+                'duration': duration,
                 'status': status,
                 'owner': owner,
                 'monitor_url': monitor_url
