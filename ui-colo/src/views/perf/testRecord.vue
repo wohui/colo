@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import {onMounted, reactive, ref, watch} from "vue"
-import {onBeforeRouteLeave, onBeforeRouteUpdate, useRoute} from "vue-router";
 import {getTableDataApi, stopExecutePlanApi} from "@/api/test-record"
 import {type GetTableData} from "@/api/test-record/types/table"
 import {FormInstance} from "element-plus"
@@ -31,31 +30,31 @@ const getTableData = () => {
     currentPage: paginationData.currentPage,
     size: paginationData.pageSize,
   })
-      .then(({data}) => {
-        paginationData.total = data.total
-        console.log(data)
-        tableData.value = data.list
-      })
-      .catch(() => {
-        tableData.value = []
-      })
-      .finally(() => {
-        loading.value = false
-      })
+    .then(({data}) => {
+      paginationData.total = data.total
+      console.log(data)
+      tableData.value = data.list
+    })
+    .catch(() => {
+      tableData.value = []
+    })
+    .finally(() => {
+      loading.value = false
+    })
 }
 const handleStop = (pid: number) => {
   loading.value = true
   stopExecutePlanApi({
     pid: pid,
   })
-      .then((data) => {
-        getTableData()
-      })
-      .catch(() => {
-      })
-      .finally(() => {
-        loading.value = false
-      })
+    .then((data) => {
+      getTableData()
+    })
+    .catch(() => {
+    })
+    .finally(() => {
+      loading.value = false
+    })
 }
 
 const handleSearch = () => {
@@ -108,26 +107,32 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
               <el-tag v-else type="danger" effect="plain">异常</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="created_at" label="创建时间" align="center"/>
+          <el-table-column prop="created_at" label="开始时间" align="center"/>
+          <el-table-column prop="updated_at" label="结束时间" align="center">
+            <template #default="scope">
+              {{ scope.row.status != 1 ? scope.row.updated_at : '-' }}
+            </template>
+          </el-table-column>
           <el-table-column fixed="right" label="操作" width="240" align="center">
             <template #default="scope">
-              <el-button type="primary" ><a :href="scope.row.monitor_url" target="_blank">监控地址</a>
+              <el-button type="primary"><a :href="scope.row.monitor_url" target="_blank">监控地址</a>
               </el-button>
-              <el-button type="danger" :disabled="scope.row.status !=1" @click="handleStop(scope.row.pid)">停止测试</el-button>
+              <el-button type="danger" :disabled="scope.row.status !=1" @click="handleStop(scope.row.pid)">停止测试
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
       <div class="pager-wrapper">
         <el-pagination
-            background
-            :layout="paginationData.layout"
-            :page-sizes="paginationData.pageSizes"
-            :total="paginationData.total"
-            :page-size="paginationData.pageSize"
-            :currentPage="paginationData.currentPage"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
+          background
+          :layout="paginationData.layout"
+          :page-sizes="paginationData.pageSizes"
+          :total="paginationData.total"
+          :page-size="paginationData.pageSize"
+          :currentPage="paginationData.currentPage"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
         />
       </div>
     </el-card>

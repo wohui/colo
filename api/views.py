@@ -182,12 +182,16 @@ def stop_execute_plan_view(request):
     cmd_handle = CMD()
     status = cmd_handle.kill_process(int(pid))
     msg = ''
+    t_record = TestRecord.objects.get(pid=pid)
     if status == 2:
-        TestRecord.objects.filter(pid=pid).update(status=2)
+        # TestRecord.objects.filter(pid=pid).update(status=2)
+        t_record.status=2
         msg = '终止测试正常'
     if status == 99:
-        TestRecord.objects.filter(pid=pid).update(status=99)
+        # TestRecord.objects.filter(pid=pid).update(status=99)
+        t_record.status = 99
         msg = '终止测试异常'
+    t_record.save() # 这样更新可以保证auto_now生效
     res = {
         'code': 0,
         'msg': msg
