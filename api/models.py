@@ -26,6 +26,7 @@ class TestRecord(models.Model):
     id = models.AutoField(primary_key=True)
     pid = models.CharField(max_length=255)
     plan_name = models.CharField(max_length=255)
+    test_plan_id = models.CharField(max_length=255,default=None)
     status = models.IntegerField(default=0)
     monitor_url = models.CharField(max_length=255, default=None)
     created_at = models.DateTimeField(auto_now_add=True)

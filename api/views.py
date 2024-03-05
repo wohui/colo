@@ -2,6 +2,7 @@ import json
 import os
 import time
 
+from apscheduler.schedulers.background import BackgroundScheduler
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from nb_log import get_logger
@@ -20,15 +21,15 @@ logger = get_logger('colo_log',
 
 # Create your views here.
 def start_locust_view(request):
-    body = request.GET.get('id')
-    logger.info('start1')
+    test_plan_name = request.GET.get('test_plan_name')
+    logger.info(f'测试开始-{test_plan_name}')
     return JsonResponse({}, safe=False)
 
 
 def stop_locust_view(request):
-    logger.info('stop1')
-    body = request.GET.get('id')
-    print(body)
+    test_plan_name = request.GET.get('test_plan_name')
+    logger.info(f'测试已结束-{test_plan_name}')
+    TestRecord.objects.filter(test_plan_id=test_plan_name).update(status=2)
     return JsonResponse({}, safe=False)
 
 
@@ -66,7 +67,7 @@ def execute_plan_view(request):
         spawn_rate = plan_info['spawn_rate']  # --spawn-rate
         script_name = plan_info['script']
         duration = plan_info['duration']  # 单位 秒
-        test_plan_name = f'{plan_info['name']}-{time.time_ns()}'
+        test_plan_id = f'{plan_info['name']}-{time.time_ns()}'
         # 获取当前文件绝对路径的的上2层目录
         parent_directory = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         # 获取脚本的绝对路径
@@ -77,7 +78,7 @@ def execute_plan_view(request):
                       f' --host {host}'
                       f' -u {user_count}'
                       f' -r {spawn_rate}'
-                      f' --override-plan-name {test_plan_name}'
+                      f' --override-plan-name {test_plan_id}'
                       f' -f {locust_file_path}'
                       f' --pghost 192.168.0.101'
                       f' --pgport 5432'
@@ -94,15 +95,18 @@ def execute_plan_view(request):
             code = -1
         else:
             # 配置监控地址，根据生成的test_plan_name+提前配置好的grafana地址组成
-            monitor_url = f'http://192.168.0.101:3000/d/xh6zZMASk/colo_101?orgId=1&var-testplan={test_plan_name}&from=now-5m&to=now'
+            monitor_url = f'http://192.168.0.101:3000/d/xh6zZMASk/colo_101?orgId=1&var-testplan={test_plan_id}&from=now-5m&to=now'
             # 生成测试执行记录，在测试执行记录页面查询和停止
             record_info = {
+                'test_plan_id': test_plan_id,
                 'plan_name': plan_info['name'],
                 'pid': pid,
                 'status': status,
                 'monitor_url': monitor_url
             }
             TestRecord.objects.create(**record_info)
+            # 启动一个定时任务，开始时间为当前时间+duration，没10秒查询下pid状态
+            scheduler = BackgroundScheduler()
     except Exception as e:
         logger.error(f'执行测试计划时发生异常-{e}')
         msg = f'execute_plan_view捕捉到异常-{e}'

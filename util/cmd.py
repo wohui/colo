@@ -49,14 +49,26 @@ class CMD():
         return self.status
         # 给 locust 进程发送终止信号
 
+    def query_status_by_pid(self, pid):
+        # 根据进程ID获取进程对象
+        try:
+            process = psutil.Process(pid)
+            process_status = process.status()
+            if process_status == 'running':
+                self.status = 1  # 其实能走到这一步没有异常，就说明状态正常是测试中
+        except psutil.NoSuchProcess:
+            logger.error(f"quert_status_by_pid发生异常，指定的进程ID-{pid}-不存在")
+            self.status = 99  # 异常
+        return self.status
+
 
 if __name__ == '__main__':
     from nb_log import get_logger
 
     cmd = ('locust --timescale --headless --host http://192.168.0.101:8000 -u 2 -r 1 '
-           '--override-plan-name 测试用户系统核心2个接口-140 -f D:\\py_space\\colo\\locust_case\\locustfile_1.py '
+           '--override-plan-name 测试用户系统核心2个接口-140 -f D:\\py_space\\colo\\locust_case\\locustfile1111_1.py '
            '--pghost 192.168.0.101 --pgport 5432 --pguser postgres --pgpassword hui666666 --pgdatabase colo_test '
-           '--run-time 3600s')
+           '--run-time 10s')
     ch = CMD()
     pid, status = ch.run(cmd)
     print(pid)
