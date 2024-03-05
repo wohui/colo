@@ -28,6 +28,7 @@ class TestRecord(models.Model):
     plan_name = models.CharField(max_length=255)
     test_plan_id = models.CharField(max_length=255,default=None)
     status = models.IntegerField(default=0)
+    owner = models.CharField(max_length=32, default=None)
     monitor_url = models.CharField(max_length=255, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

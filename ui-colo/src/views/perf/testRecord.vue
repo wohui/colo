@@ -100,6 +100,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column type="selection" width="50" align="center"/>
           <el-table-column prop="pid" label="进程ID" align="center"/>
           <el-table-column prop="plan_name" label="测试计划" align="center"/>
+          <el-table-column prop="owner" label="负责人" align="center"/>
           <el-table-column prop="status" label="状态" align="center">
             <template #default="scope">
               <el-tag v-if="scope.row.status==1" type="primary" effect="plain">测试中</el-tag>
@@ -110,9 +111,9 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
           <el-table-column prop="created_at" label="创建时间" align="center"/>
           <el-table-column fixed="right" label="操作" width="240" align="center">
             <template #default="scope">
-              <el-button type="primary" text bg size="small"><a :href="scope.row.monitor_url" target="_blank">监控地址</a>
+              <el-button type="primary" ><a :href="scope.row.monitor_url" target="_blank">监控地址</a>
               </el-button>
-              <el-button type="danger" :disabled="scope.row.status !=1" text bg size="small" @click="handleStop(scope.row.pid)">停止测试</el-button>
+              <el-button type="danger" :disabled="scope.row.status !=1" @click="handleStop(scope.row.pid)">停止测试</el-button>
             </template>
           </el-table-column>
         </el-table>

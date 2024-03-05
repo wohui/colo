@@ -67,7 +67,8 @@ def execute_plan_view(request):
         spawn_rate = plan_info['spawn_rate']  # --spawn-rate
         script_name = plan_info['script']
         duration = plan_info['duration']  # 单位 秒
-        test_plan_id = f'{plan_info['name']}-{time.time_ns()}'
+        test_plan_id = f'{plan_info['name']}-{str(time.time_ns())[:2]}'
+        owner = plan_info['owner']
         # 获取当前文件绝对路径的的上2层目录
         parent_directory = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         # 获取脚本的绝对路径
@@ -102,6 +103,7 @@ def execute_plan_view(request):
                 'plan_name': plan_info['name'],
                 'pid': pid,
                 'status': status,
+                'owner': owner,
                 'monitor_url': monitor_url
             }
             TestRecord.objects.create(**record_info)

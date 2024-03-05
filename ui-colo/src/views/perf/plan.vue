@@ -188,11 +188,11 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
             </template>
           </el-table-column>
           <el-table-column prop="created_at" label="创建时间" align="center"/>
-          <el-table-column fixed="right" label="操作" width="240" align="center">
+          <el-table-column fixed="right" label="操作" width="260" align="center">
             <template #default="scope">
-              <el-button type="primary" text bg size="small" @click="handleExecute(scope.row)">开始压测</el-button>
-              <el-button type="primary" text bg size="small" @click="handleUpdate(scope.row)">修改</el-button>
-              <el-button type="danger" text bg size="small" @click="handleDelete(scope.row)">删除</el-button>
+              <el-button type="primary"  @click="handleExecute(scope.row)">开始压测</el-button>
+              <el-button type="primary"   @click="handleUpdate(scope.row)">修改</el-button>
+              <el-button type="danger"  @click="handleDelete(scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>

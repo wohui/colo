@@ -15,6 +15,7 @@ export interface GetTableData {
   pid: string
   status: boolean
   plan_name: string
+  owner: string
   monitor_url: string
 }
 
