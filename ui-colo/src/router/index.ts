@@ -134,7 +134,7 @@ export const constantRoutes: RouteRecordRaw[] = [
     children: [
       {
         path: "env",
-        component: () => import("@/views/menu/menu2/index.vue"),
+        component: () => import("@/views/test-machine/index.vue"),
         name: "Env",
         meta: {
           title: "环境管理",

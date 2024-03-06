@@ -152,21 +152,16 @@ def get_all_script_view(request):
     }
     return JsonResponse(res, safe=False)
 
-
 def get_test_record_view(request):
     page_size = int(request.GET.get('size'))
     page_number = int(request.GET.get('currentPage'))
-
     test_record_query = TestRecord.objects.filter().values().order_by('-created_at')
-
     # 创建Paginator对象
     paginator = Paginator(test_record_query, page_size)
-
     # 获取指定页数的数据
     page_obj = paginator.get_page(page_number)
     # 获取当前页的数据列表
     data_list = page_obj.object_list
-
     res = {
         'data': {
             'total': len(test_record_query),

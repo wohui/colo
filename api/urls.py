@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from django.urls import include
 
 urlpatterns = [
     path("users/login", views.test_view, name="login"),
@@ -18,5 +19,6 @@ urlpatterns = [
 
     path("test/start", views.start_locust_view, name="start"),
     path("test/stop", views.stop_locust_view, name="stop"),
+
 
 ]
