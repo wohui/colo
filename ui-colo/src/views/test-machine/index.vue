@@ -18,7 +18,7 @@ const loading = ref<boolean>(false)
 const searchData = reactive({
   ip: "",
 })
-const DEFAULT_FORM_DATA: CreateOrUpdateEnvRequestData = {
+const DEFAULT_FORM_DATA: CreateOrUpdateTestMachineRequestData = {
   id: undefined,
   ip: '',
   hardware_info: 'CPU:    内存:   硬盘    ',
@@ -32,7 +32,21 @@ const formRef = ref<FormInstance | null>(null)
 const formRules: FormRules<CreateOrUpdateTestMachineRequestData> = {
   ip: [{required: true, trigger: "blur", message: "请输入IP地址"}],
 }
-
+const machineStatusOptionsValue = ref('')
+const machineStatusOptions = ref([
+  {
+    value: 0,
+    label: '空闲'
+  },
+  {
+    value: 1,
+    label: '被占用'
+  },
+  {
+    value: 99,
+    label: '异常'
+  }
+])
 const {paginationData, handleCurrentChange, handleSizeChange} = usePagination()
 const testMachineData = ref<GetTestMachineData[]>([])
 const getTestMachineData = () => {
@@ -40,7 +54,6 @@ const getTestMachineData = () => {
   getTestMachineDataApi({
     currentPage: paginationData.currentPage,
     size: paginationData.pageSize,
-    name: searchData.name || undefined,
   })
     .then(({data}) => {
       paginationData.total = data.total
@@ -84,7 +97,7 @@ const handleApply = (row: GetTestMachineData) => {
     cancelButtonText: "取消",
     type: "warning"
   }).then(() => {
-    applyTestMachineApi({'id':row.id}).then(() => {
+    applyTestMachineApi({id: row.id}).then(() => {
       ElMessage.success("占用成功")
       getTestMachineData()
     })
@@ -96,7 +109,7 @@ const handleDelete = (row: GetTestMachineData) => {
     cancelButtonText: "取消",
     type: "warning"
   }).then(() => {
-    deleteTestMachineApi({'id':row.id}).then(() => {
+    deleteTestMachineApi({id: row.id}).then(() => {
       ElMessage.success("删除成功")
       getTestMachineData()
     })
@@ -147,9 +160,9 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTest
           <el-table-column prop="owner" label="负责人" align="center"/>
           <el-table-column prop="status" label="机器状态" align="center">
             <template #default="scope">
-              <el-tag v-if="scope.row.status==0" type="primary" effect="plain">空闲</el-tag>
-              <el-tag v-else-if="scope.row.status==1" type="success" effect="plain">被占用</el-tag>
-              <el-tag v-else type="danger" effect="plain">异常</el-tag>
+              <el-tag v-if="scope.row.status==0" size="large" type="success" effect="dark">空闲</el-tag>
+              <el-tag v-else-if="scope.row.status==1" size="large" type="info" effect="dark">忙碌</el-tag>
+              <el-tag v-else type="danger" size="large" effect="dark">异常</el-tag>
             </template>
           </el-table-column>
           <el-table-column prop="created_at" label="创建时间" align="center"/>
@@ -180,22 +193,34 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTest
     <!-- 新增/修改 -->
     <el-dialog
       v-model="dialogVisible"
-      :title="formData.id === undefined ? '新增计划' : '修改计划'"
+      :title="formData.id === undefined ? '新增机器' : '修改机器'"
       @closed="resetForm"
-      width="40%"
+      width="25%"
     >
       <el-form ref="formRef" :model="formData" :rules="formRules" label-width="110px" label-position="left">
-        <el-form-item prop="ip" label="计划名称">
+        <el-form-item prop="ip" label="机器地址" size="large">
           <el-input v-model="formData.ip" placeholder="请输入IP地址"/>
         </el-form-item>
-        <el-form-item prop="hardware_info" label="硬件信息">
+        <el-form-item prop="hardware_info" label="硬件信息" size="large">
           <el-input v-model="formData.hardware_info" placeholder="请输入"/>
         </el-form-item>
-        <el-form-item prop="owner" label="负责人">
+        <el-form-item prop="owner" label="负责人" size="large">
           <el-input v-model="formData.owner" placeholder="请输入"/>
         </el-form-item>
-        <el-form-item prop="status" label="机器状态">
-          <el-input v-model="formData.status" placeholder="请输入"/>
+        <el-form-item prop="status" label="机器状态" size="large">
+          <el-select
+            v-model="formData.status"
+            placeholder="Select"
+            size="large"
+            style="width: 240px"
+          >
+            <el-option
+              v-for="item in machineStatusOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
       </el-form>
       <template #footer>
