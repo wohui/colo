@@ -17,7 +17,7 @@ export interface GetTestMachineRequestData {
   currentPage: number
 }
 
-export interface TestMachineRequetDataByID {
+export interface TestMachineRequestDataByID {
   id: string
 }
 
@@ -48,7 +48,7 @@ export function createTestMachineApi(data: CreateOrUpdateTestMachineRequestData)
   })
 }
 
-export function deleteTestMachineApi(data: TestMachineRequetDataByID) {
+export function deleteTestMachineApi(data: TestMachineRequestDataByID) {
   return request({
     url: "env/deleteTestMachine",
     method: "post",
@@ -56,7 +56,7 @@ export function deleteTestMachineApi(data: TestMachineRequetDataByID) {
   })
 }
 
-export function applyTestMachineApi(data:TestMachineRequetDataByID) {
+export function applyTestMachineApi(data:TestMachineRequestDataByID) {
   return request({
     url: "env/applyTestMachine",
     method: "post",

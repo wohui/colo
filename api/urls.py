@@ -1,7 +1,7 @@
 from django.urls import path
 
 from . import views
-from django.urls import include
+from .sys_config import views as sys_config_views
 
 urlpatterns = [
     path("users/login", views.test_view, name="login"),
@@ -20,5 +20,9 @@ urlpatterns = [
     path("test/start", views.start_locust_view, name="start"),
     path("test/stop", views.stop_locust_view, name="stop"),
 
-
+    # sysconfig
+    path("sysConfig/createConfig", sys_config_views.create_config_view, name="create_config"),
+    path("sysConfig/deleteConfig", sys_config_views.delete_config_view, name="delete_config"),
+    path("sysConfig/updateConfig", sys_config_views.update_config_view, name="update_config"),
+    path("sysConfig/getConfig", sys_config_views.get_config_view, name="get_config"),
 ]

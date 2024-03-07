@@ -156,11 +156,12 @@ export const constantRoutes: RouteRecordRaw[] = [
     children: [
       {
         path: "system",
-        component: () => import("@/views/menu/menu2/index.vue"),
+        component: () => import("@/views/sys-config/index.vue"),
         name: "System",
         meta: {
           title: "系统配置",
           svgIcon: "unocss",
+          roles: ["admin"], // 可以在根路由中设置角色
           keepAlive: true
         }
       },

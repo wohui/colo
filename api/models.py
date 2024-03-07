@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -26,11 +27,23 @@ class TestRecord(models.Model):
     id = models.AutoField(primary_key=True)
     pid = models.CharField(max_length=255)
     plan_name = models.CharField(max_length=255)
-    test_plan_id = models.CharField(max_length=255,default=None)
+    test_plan_id = models.CharField(max_length=255, default=None)
     duration = models.IntegerField(default=0)
     status = models.IntegerField(default=0)
     owner = models.CharField(max_length=32, default=None)
     monitor_url = models.CharField(max_length=255, default=None)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.id
+
+
+class SysConfig(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255, unique=True)
+    content = models.JSONField(max_length=255, default=dict)
+    status = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
