@@ -2,10 +2,7 @@
 
 from . import views
 
-
 urlpatterns = [
-
-
     path("createTestMachine", views.create_test_machine_view, name="create"),
     path("updateTestMachine", views.update_test_machine_view, name="update"),
     path("deleteTestMachine", views.delete_test_machine_view, name="delete"),
