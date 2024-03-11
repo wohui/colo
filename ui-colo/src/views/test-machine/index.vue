@@ -29,9 +29,23 @@ const formData = ref<CreateOrUpdateTestMachineRequestData>(JSON.parse(JSON.strin
 const dialogVisible = ref<boolean>(false)
 const searchFormRef = ref<FormInstance | null>(null)
 const formRef = ref<FormInstance | null>(null)
-const formRules: FormRules<CreateOrUpdateTestMachineRequestData> = {
-  ip: [{required: true, trigger: "blur", message: "请输入IP地址"}],
+const isValidIP = (rule: any, value: any, callback: any) => {
+  console.log(value)
+  const ipPattern = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+  if (ipPattern.test(value)) {
+    callback()
+  } else {
+    callback(new Error('请输入合法的IP地址'))
+  }
 }
+const formRules: FormRules<CreateOrUpdateTestMachineRequestData> = {
+  ip: [{required: true, trigger: "blur", message: "请输入IP地址"}, {
+    validator: isValidIP,
+    required: true,
+    trigger: 'blur'
+  }],
+}
+
 const machineStatusOptionsValue = ref('')
 const machineStatusOptions = ref([
   {
