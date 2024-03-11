@@ -25,7 +25,7 @@ const {paginationData, handleCurrentChange, handleSizeChange} = usePagination()
 const DEFAULT_FORM_DATA: CreateOrUpdateTableRequestData = {
   id: undefined,
   name: "测试登录",
-  host: "http://10.1.0.222:6666",
+  host: "",
   script: "locustfile_1.py",
   user_count: 1,
   spawn_rate: 1,
@@ -38,6 +38,7 @@ const formRef = ref<FormInstance | null>(null)
 const formData = ref<CreateOrUpdateTableRequestData>(JSON.parse(JSON.stringify(DEFAULT_FORM_DATA)))
 const formRules: FormRules<CreateOrUpdateTableRequestData> = {
   name: [{required: true, trigger: "blur", message: "请输入名称"}],
+  host: [{required: true, trigger: "blur", message: "请输入完整接口URL"}],
 }
 const handleCreateOrUpdate = () => {
   formRef.value?.validate((valid: boolean, fields) => {
@@ -83,7 +84,7 @@ const handleUpdate = (row: GetTableData) => {
 }
 const handleExecute = (row: GetTableData) => {
   // 执行测试计划，生成测试记录
-  executePerfPlan(row)
+  openExecutePlanConfirmBox(row)
   // formData.value = JSON.parse(JSON.stringify(row))
 }
 const handleStop = (row: GetTableData) => {
@@ -130,6 +131,31 @@ const executePerfPlan = (row: GetTableData) => {
       .finally(() => {
         loading.value = false
       })
+}
+const openExecutePlanConfirmBox = (row:GetTableData) => {
+  ElMessageBox.confirm(
+    '压测检查是否全部就绪，确认继续?',
+    '警告',
+    {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+    .then(() => {
+      //确认后执行
+      executePerfPlan(row)
+      ElMessage({
+        type: 'success',
+        message: '执行成功',
+      })
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '取消执行',
+      })
+    })
 }
 const handlePlanMenuSelect = (key: string, keyPath: string[]) => {
   planActiveIndex.value = key
@@ -216,6 +242,7 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
         :title="formData.id === undefined ? '新增计划' : '修改计划'"
         @closed="resetForm"
         width="40%"
+        height="50%"
     >
       <el-menu
           :default-active="planActiveIndex"
@@ -229,11 +256,11 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
       </el-menu>
 
       <el-form ref="formRef" :model="formData" :rules="formRules" label-width="110px" label-position="left">
-        <el-form-item prop="planName" label="计划名称" v-show="planActiveIndex=='1'">
-          <el-input v-model="formData.name" placeholder="请输入"/>
+        <el-form-item prop="planName" label="计划名称" v-show="planActiveIndex=='1'" >
+          <el-input v-model="formData.name" data-width="" placeholder="请输入"/>
         </el-form-item>
         <el-form-item prop="host" label="目标环境" v-show="planActiveIndex=='1'">
-          <el-input v-model="formData.host" placeholder="请输入"/>
+          <el-input v-model="formData.host" placeholder="请输入主机或域名，eg.http://192.168.1.1/"/>
         </el-form-item>
         <el-form-item prop="script" label="压测脚本" v-show="planActiveIndex=='1'">
           <el-input v-model="formData.script" placeholder="请输入"/>
@@ -264,7 +291,12 @@ watch([() => paginationData.currentPage, () => paginationData.pageSize], getTabl
     padding-bottom: 2px;
   }
 }
-
+.el-form {
+  margin-top: 10px;
+}
+.el-form-item {
+  width: 50%;
+}
 .toolbar-wrapper {
   display: flex;
   justify-content: space-between;
