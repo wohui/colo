@@ -31,7 +31,9 @@
 ## 部署基础组件
 
 1.部署Grafana+postgressql，推荐使用docker部署，项目下有docker-compose.yml文件，可参考部署
+
 2.建好数据库/assets/timescale_schema.sql有脚本
+
 3.部署Grafana，导入好监控指标
 
 参考：locust_plugins [https://github.com/SvenskaSpel/locust-plugins/tree/master/locust_plugins/dashboards](https://)
